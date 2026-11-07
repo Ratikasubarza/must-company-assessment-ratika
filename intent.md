@@ -7,7 +7,7 @@
 - A4 Noise if implied speed is more than 150 km/h. Exactly 150.0 km/h is kept (inclusive).
 - A5 Implied speed is measured from the last accepted ping of the same driver, in timestamp order, using the actual time delta.
 - A6 Duplicate = same driver_id and same ts_utc. Keep the first occurrence in file order; log any conflicting coordinates.
-- A7 A segment counts toward distance only when both endpoints are inside Z1. No clipping. Known limitation: segments crossing the boundary are under-counted. This is quantified in the analysis (see Problems found).
+- A7 A segment counts toward distance only for the part inside Z1. Segments crossing the boundary are clipped at the edge, and only the inside part is measured. Inside includes the boundary (covers, per B-01) points are inside Z1. No clipping. Known limitation: segments crossing the boundary are under-counted. This is quantified in the analysis (see Problems found).
 - A8 A segment belongs to the local day (UTC+9) of its starting ping.
 - A9 Irregular intervals are reported as warnings. They do not change distance, because A5 uses actual deltas.
 - B-01 Ping exactly on the zone edge is inside (covers).
