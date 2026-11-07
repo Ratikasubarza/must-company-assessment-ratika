@@ -12,6 +12,7 @@
 - A9 Irregular intervals are reported as warnings. They do not change distance, because A5 uses actual deltas.
 - B-01 Ping exactly on the zone edge is inside (covers).
 - Monetary rate per km: out of scope. The brief defines no rate; AC 2 pay amount is not tested.
+- Pipeline order: A6 dedup, then sort by ts_utc (stable, so file order breaks ties), then A3 off-road filter, then A4 speed filter, then A7 clipping, then A8 day assignment.
 
 ## Problems found
 
