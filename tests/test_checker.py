@@ -163,30 +163,44 @@ def test_TC_56_fresh_copy_runs_from_readme_command(record, tmp_path):
 
 @pytest.mark.parametrize("name,tc,needle", [
     ("F_INVALID_swapped.csv", "TC-60", "swapped"),
-    ("F_INVALID_offset.csv", "TC-61", "offset"),
-    ("F_INVALID_no_z.csv", "TC-62", "no Z"),
-    ("F_INVALID_range.csv", "TC-63", "out of range"),
-    ("F_INVALID_missing_col.csv", "TC-64", "missing column"),
-    ("F_INVALID_bad_second.csv", "TC-71", "not a valid date/time"),
+    ("F_INVALID_offset.csv", "X-01", "offset"),
+    ("F_INVALID_no_z.csv", "X-02", "no Z"),
+    ("F_INVALID_range.csv", "X-03", "out of range"),
+    ("F_INVALID_missing_col.csv", "X-04", "missing column"),
+    ("F_INVALID_bad_second.csv", "X-11", "not a valid date/time"),
 ])
-def test_TC_60_to_64_checker_rejects_bad_input(record, name, tc, needle):
+def test_TC_60_and_X_01_to_X_04_X_11_checker_rejects_bad_input(record, name, tc, needle):
     """Given a bad pings file (swapped lat/lon, UTC offset, no Z, out-of-range coordinate, missing column),
     When qa_check.py validates its inputs,
-    Then it exits 2 with an INPUT ERROR naming the problem (TC-61..64 are not in the sheet yet)."""
+    Then it exits 2 with an INPUT ERROR naming the problem (X-01..X-04 are repo-only tests, not sheet cases; P-09)."""
     p = qa("--pings", fx(name), "--ground-truth", fx("F_BOUNDARY_ground_truth.csv"),
            "--report", fx("F_BOUNDARY_ground_truth.csv"))
     record(tc, IMPL, f"exit 2, '{needle}'", f"exit {p.returncode}: {p.stderr.strip()[:160]}")
     assert p.returncode == 2 and needle in p.stderr
 
 
-def test_TC_65_checker_help(record):
+def test_TC_62_checker_rejects_empty_pings_file(record, tmp_path):
+    """Given an empty pings file (0 bytes),
+    When qa_check.py validates its inputs,
+    Then it exits 2 with an INPUT ERROR and reports no comparison (no partial result)."""
+    empty = tmp_path / "empty.csv"
+    empty.write_bytes(b"")
+    report = tmp_path / "daily_km.csv"  # a valid report, so only the pings file can cause the rejection
+    report.write_text("label,driver_id,local_date,km\nSYNTHETIC,DRV-A,2026-11-07,0.778364\n")
+    p = qa("--pings", str(empty), "--ground-truth", fx("F_BOUNDARY_ground_truth.csv"), "--report", str(report))
+    act = (p.returncode, "INPUT ERROR: pings" in p.stderr, "RESULT" in p.stdout)
+    record("TC-62", IMPL, (2, True, False), act)
+    assert act == (2, True, False), p.stderr
+
+
+def test_X_05_checker_help(record):
     """Given qa_check.py,
     When it is run with --help,
-    Then it exits 0 and prints usage with every option (TC-65 is not in the sheet yet)."""
+    Then it exits 0 and prints usage with every option (X-05 is a repo-only test, not a sheet case; P-09)."""
     p = qa("--help")
     opts = ["--pings", "--ground-truth", "--report", "--events", "--route", "--tolerance-km", "--out"]
     act = (p.returncode, all(o in p.stdout for o in opts))
-    record("TC-65", IMPL, (0, True), act)
+    record("X-05", IMPL, (0, True), act)
     assert act == (0, True)
 
 

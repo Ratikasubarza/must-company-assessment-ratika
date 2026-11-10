@@ -43,7 +43,7 @@ the copy. With files uncommitted it fails, and step 6 then reports BAD.
 - **xfailed 28** = 18 bug-regression tests on old_reference (must fail: `xfail(strict=True)`) + 9 guards
   on old_reference (old's result is only recorded) + NC-01 (known limitation: GPS jitter while parked is
   not filtered, `xfail(strict=True)`).
-- **xpassed 5** = guards that old_reference happens to pass (TC-27, TC-35, TC-41, TC-52, TC-71). Guards use
+- **xpassed 5** = guards that old_reference happens to pass (TC-27, TC-35, TC-41, TC-52, X-11). Guards use
   `xfail(strict=False)`, so this is reported, not failed.
 - Any **failed** is a real problem. Any XPASS on a bug-regression test or on NC-01 fails the run (strict).
 
@@ -96,15 +96,18 @@ Checker help: `python qa_check.py --help`. Exit codes: 0 pass, 1 check failure, 
 | `fixtures/` | F_BOUNDARY (+ hand calculation), F_ZONE, F_NOISE, F_STATIONARY, F_PARKED_JITTER, F_LONG, F_DUPLICATES, F_DUP_HALF_*, F_DAYCUT, F_LATE, F_INTERVALS_*, F_INVALID_* and test geometry. |
 | `tests/` | `test_functional.py` (fixed.py), `test_regression.py` (bug regressions: old fails, fixed passes; worst-case guards: fixed must pass; TC-57/58), `test_checker.py` (qa_check.py). Checks live in `regression_checks.py` and `regression_guards.py`. Each test is named by its TC_ID and has Given/When/Then. |
 | `tools/` | `problem_impact.py` (each bug group on alone vs no bugs; day-cut before/after), `limitations.py` (11 measured limitations of fixed.py). Both run in step 5. |
-| `docs/` | `Test-assessment-Must Company - Ratika - Regression Test Cases.csv`: the sheet's "Regression Test Cases" tab as CSV (tested as RTC-01..RTC-14). The "Test Cases" tab (TC-01..TC-60) is not in the repo. |
+| `docs/` | [`test_cases.csv`](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/docs/test_cases.csv): the sheet's "Test Cases" tab (TC-01..TC-69). [`regression_test_cases.csv`](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/docs/regression_test_cases.csv): its "Regression Test Cases" tab (tested as RTC-01..RTC-14). |
 | `directive.md` | Objective, scope, requirements, completion criteria and results handoff (standalone; links point to https://github.com/Ratikasubarza/must-company-assessment-ratika, branch main). |
 | `results/` | Latest run: `test_results.csv`, `before_after.csv`, `regression_summary.csv/.md`, `regression_guards.csv`, `problem_impact.csv`, `problem_examples.csv`, `daycut_before_after.csv`, `limitations.csv`, `qa_*` and `problem_qa/` checker reports, `RUN_ID`. Every run: `history/<run_id>/` and `history/runs.csv`. |
 
 ## Test IDs
-- `TC-xx`: the Test Cases tab (TC-01..TC-60, all covered). `RTC-xx`: the "Regression Test Cases" tab
-  (RTC-01..RTC-14, all covered; the tab reuses TC-01..14, see P-04). `NC-xx`: known limitations, kept as
+- `TC-xx`: the "Test Cases" tab (`docs/test_cases.csv`, TC-01..TC-69). 62 cases have a test named by their ID;
+  6 (TC-61, TC-63..TC-66, TC-68) are covered by other tests, mapped in intent.md; TC-69 is covered on fixed.py
+  only (old_reference.py has no interval warnings, so it is a missing feature, not a planted bug; intent.md P-12). `RTC-xx`: the "Regression Test
+  Cases" tab (`docs/regression_test_cases.csv`): all 14 have a test (the tab reuses TC-01..14, see P-04). `NC-xx`: known limitations, kept as
   strict expected failures (NC-01: GPS jitter while parked, P-10).
-- `TC-00` (hand-calculation gate) and `TC-61..TC-71` (extra input-validation, `--help`, 149.9 km/h, 10.1 s / 9.99 s intervals, negative coordinates, not-a-duplicate and 08:59:99 tests) are new
-  and not in the sheet yet (P-09).
+- `X-01..X-11`: the repo's own extra tests (input validation, `--help`, 149.9 km/h, 10.1 s / 9.99 s intervals,
+  negative coordinates, not-a-duplicate, 08:59:99). The X prefix keeps them apart from the sheet's TC-xx IDs (P-09).
+  `TC-00` (hand-calculation gate) is also repo-only; the sheet has no TC-00.
 - In `results/test_results.csv`, `result` is the raw outcome on that implementation. Regression tests are
   **meant** to show `FAIL` on `old_reference` and `PASS` on `fixed`.

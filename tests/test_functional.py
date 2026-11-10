@@ -227,44 +227,44 @@ def test_TC_22_ping_at_160kmh_dropped(record):
     assert status(res, "DRV-H", 3) == "DROPPED_SPEED" and [e["ping_id"] for e in ev] == ["3"]
 
 
-def test_TC_66_speed_149_9_kmh_just_below_limit_kept(record):
+def test_X_06_speed_149_9_kmh_just_below_limit_kept(record):
     """Given F_NOISE DRV-O: ping 3 is 149.9 km/h from ping 2 (0.1 km/h under the A4 limit),
     When the pipeline runs,
     Then all 5 pings are kept, ping 3's speed reads 149.900 km/h, and km = 0.0040 deg = 0.444780 km
-    (lon 0.0060 -> 0.0100 along R1, inside Z1). TC-66 is not in the sheet yet (P-09)."""
+    (lon 0.0060 -> 0.0100 along R1, inside Z1). X-06 is a repo-only test, not a sheet case (P-09)."""
     res = run("F_NOISE.csv")
     sts = [status(res, "DRV-O", i) for i in range(1, 6)]
     v = res.ping_status[("DRV-O", "3")]["speed_kmh"]
     exp = (["ACCEPTED"] * 5, 149.9, deg_km(0.0040))
     act = (sts, v, driver_km(res, "DRV-O"))
-    record("TC-66", IMPL, exp, act)
+    record("X-06", IMPL, exp, act)
     assert sts == exp[0] and abs(v - 149.9) < 0.001 and close(act[2], exp[2])
 
 
-def test_TC_67_intervals_10_1s_and_9_99s_inside_zone(record):
+def test_X_07_intervals_10_1s_and_9_99s_inside_zone(record):
     """Given F_ZONE DRV-J: 5 pings inside Z1, 0.0004 deg apart, at 0, 10, 20.1, 30.09, 40.09 s
     (intervals 10, 10.1, 9.99, 10 s),
     When the pipeline runs,
     Then all pings are kept, km = 4 x 0.0004 deg = 0.177912 km (same as a regular 10 s run, A9),
     and exactly two INTERVAL_WARNINGs are logged: 10.1 s (gap) after ping 2, 9.99 s (short) after ping 3.
-    TC-67 is not in the sheet yet."""
+    X-07 is a repo-only test, not a sheet case (P-09)."""
     res = run("F_ZONE.csv")
     warns = [(e["ping_id"], e["detail"].split(" after")[0]) for e in events(res, "INTERVAL_WARNING", "DRV-J")]
     kept = [status(res, "DRV-J", i) for i in range(1, 6)]
     exp = (["ACCEPTED"] * 5, deg_km(0.0016), [("3", "interval 10.1 s"), ("4", "interval 9.99 s")])
     act = (kept, driver_km(res, "DRV-J"), warns)
-    record("TC-67", IMPL, exp, act)
+    record("X-07", IMPL, exp, act)
     assert kept == exp[0] and close(act[1], exp[1]) and warns == exp[2]
 
 
-def test_TC_68_negative_coordinates(record):
+def test_X_08_negative_coordinates(record):
     """Given F_ZONE DRV-K at lon -0.0004, 0, 0.0004 (lat 0; ping 1 is 44.478 m before R1's start, outside Z1)
     and DRV-L at (0.0070, 0), (0.0074, -0.0004), (0.0078, 0), (0.0082, 0) (ping 2 is 44.478 m south of R1,
     inside Z1, which spans lat -0.003..0.003),
     When the pipeline runs,
     Then every ping is kept (all within 100 m); DRV-K = 0 km (outside Z1);
     DRV-L = 2 x diagonal + 0.0004 deg = 2 x 62.901 m + 44.478 m = 0.170281 km, with ping 2 inside Z1.
-    TC-68 is not in the sheet yet."""
+    X-08 is a repo-only test, not a sheet case (P-09)."""
     res = run("F_ZONE.csv")
     l_pts = [(0.0070, 0.0), (0.0074, -0.0004), (0.0078, 0.0), (0.0082, 0.0)]
     exp_l = path_inside_km(l_pts)
@@ -273,51 +273,89 @@ def test_TC_68_negative_coordinates(record):
     l2_in = res.ping_status[("DRV-L", "2")]["in_zone"]
     exp = (["ACCEPTED"] * 3, 0.0, ["ACCEPTED"] * 4, True, exp_l)
     act = (k_kept, driver_km(res, "DRV-K"), l_kept, l2_in, driver_km(res, "DRV-L"))
-    record("TC-68", IMPL, exp, act)
+    record("X-08", IMPL, exp, act)
     assert act[0] == exp[0] and act[1] == 0.0 and act[2] == exp[2] and l2_in is True and close(act[4], exp_l)
     assert abs(exp_l * 1000 - 170.281) < 0.001  # hand value from the docstring
 
 
-def test_TC_69_same_driver_new_timestamp_same_coordinates_not_duplicate(record):
+def test_X_09_same_driver_new_timestamp_same_coordinates_not_duplicate(record):
     """Given F_DUPLICATES DRV-G: pings 1 and 2 at the same coordinates (0.0070, 0) but 10 s apart,
     then ping 3 at (0.0074, 0),
     When the pipeline runs,
     Then no ping is treated as a duplicate (A6 matches on timestamp, not coordinates): all 3 kept,
-    no DUPLICATE events, km = 0 (ping 1->2) + 0.0004 deg = 0.044478 km. TC-69 is not in the sheet yet."""
+    no DUPLICATE events, km = 0 (ping 1->2) + 0.0004 deg = 0.044478 km. X-09 is a repo-only test, not a sheet case (P-09)."""
     res = run("F_DUPLICATES.csv")
     dups = [e for e in res.events if e["driver_id"] == "DRV-G" and e["event_type"].startswith("DUPLICATE")]
     seg12 = next(s["inside_m"] for s in res.segments if s["driver_id"] == "DRV-G" and s["from_ping"] == "1")
     exp = (["ACCEPTED"] * 3, 0, 0.0, deg_km(0.0004))
     act = ([status(res, "DRV-G", i) for i in (1, 2, 3)], len(dups), seg12, driver_km(res, "DRV-G"))
-    record("TC-69", IMPL, exp, act)
+    record("X-09", IMPL, exp, act)
     assert act[:3] == exp[:3] and close(act[3], exp[3])
 
 
-def test_TC_70_same_driver_new_timestamp_new_coordinates_not_duplicate(record):
+def test_X_10_same_driver_new_timestamp_new_coordinates_not_duplicate(record):
     """Given F_DUPLICATES DRV-H: 3 pings 10 s apart at (0.0070, 0), (0.0074, 0), (0.0078, 0),
     When the pipeline runs,
     Then none is a duplicate: all 3 kept, no DUPLICATE events, km = 0.0008 deg = 0.088956 km.
-    TC-70 is not in the sheet yet."""
+    X-10 is a repo-only test, not a sheet case (P-09)."""
     res = run("F_DUPLICATES.csv")
     dups = [e for e in res.events if e["driver_id"] == "DRV-H" and e["event_type"].startswith("DUPLICATE")]
     exp = (["ACCEPTED"] * 3, 0, deg_km(0.0008))
     act = ([status(res, "DRV-H", i) for i in (1, 2, 3)], len(dups), driver_km(res, "DRV-H"))
-    record("TC-70", IMPL, exp, act)
+    record("X-10", IMPL, exp, act)
     assert act[:2] == exp[:2] and close(act[2], exp[2])
 
 
-def test_TC_71_invalid_time_08_59_99_rejected_for_both_drivers(record, tmp_path):
-    """Given F_INVALID_bad_second: DRV-G (TC-69) and DRV-H (TC-70) both send a ping stamped
+def test_X_11_invalid_time_08_59_99_rejected_for_both_drivers(record, tmp_path):
+    """Given F_INVALID_bad_second: DRV-G (X-09) and DRV-H (X-10) both send a ping stamped
     2026-11-07T08:59:99Z (lines 3 and 5; second 99 does not exist),
     When fixed.py loads it through the CLI,
     Then exit code 2, the error names line 3 and line 5 as invalid date/time, and no output is written.
-    TC-71 is not in the sheet yet."""
+    X-11 is a repo-only test, not a sheet case (P-09)."""
     out = tmp_path / "out"
     p = subprocess.run([sys.executable, os.path.join(ROOT, "fixed.py"), "--pings", fx("F_INVALID_bad_second.csv"),
                         "--out", str(out)], capture_output=True, text=True)
     act = (p.returncode, "line 3" in p.stderr, "line 5" in p.stderr, "not a valid date/time" in p.stderr, out.exists())
-    record("TC-71", IMPL, (2, True, True, True, False), act)
+    record("X-11", IMPL, (2, True, True, True, False), act)
     assert act == (2, True, True, True, False), p.stderr
+
+
+def test_TC_62_empty_pings_file_explicit_error_no_partial_result(record, tmp_path):
+    """Given an empty pings file (0 bytes),
+    When fixed.py loads it through the CLI,
+    Then exit code 2 with an explicit error on stderr, and no output directory is written (no partial result).
+    (Sheet TC-62 also names 'missing column', covered by X-04. A file with a header and no rows is accepted
+    with 0 rows; that case is not covered here, see intent.md P-11.)"""
+    empty = tmp_path / "empty.csv"
+    empty.write_bytes(b"")
+    out = tmp_path / "out"
+    p = subprocess.run([sys.executable, os.path.join(ROOT, "fixed.py"), "--pings", str(empty), "--out", str(out)],
+                       capture_output=True, text=True)
+    act = (p.returncode, "input rejected" in p.stderr, out.exists())
+    record("TC-62", IMPL, (2, True, False), act)
+    assert act == (2, True, False), p.stderr
+
+
+def test_TC_67_irregular_driver_does_not_affect_regular_driver(record, tmp_path):
+    """Given DRV-A with 13 pings exactly 10 s apart (F_INTERVALS_regular) and DRV-B with the same positions but
+    one 30 s gap and one 5 s interval (F_INTERVALS_irregular, renamed DRV-B), interleaved in one file by time,
+    When the pipeline runs,
+    Then interval warnings are per driver: 0 for DRV-A, 2 for DRV-B (pings 7 and 13); DRV-A's km equals its km
+    when run alone, 12 x 0.0003 deg = 0.400302 km."""
+    reg = list(csv.DictReader(open(fx("F_INTERVALS_regular.csv"))))
+    irr = [dict(r, driver_id="DRV-B") for r in csv.DictReader(open(fx("F_INTERVALS_irregular.csv")))]
+    both = tmp_path / "two_drivers.csv"
+    with open(both, "w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(reg[0]))
+        w.writeheader()
+        w.writerows(sorted(reg + irr, key=lambda r: (r["ts_utc"], r["driver_id"])))
+    res = fixed.run_file(str(both))
+    alone = fixed.run_file(fx("F_INTERVALS_regular.csv"))
+    warn = {d: sorted(e["ping_id"] for e in events(res, "INTERVAL_WARNING", d)) for d in ("DRV-A", "DRV-B")}
+    exp = ({"DRV-A": [], "DRV-B": ["13", "7"]}, deg_km(0.0036), deg_km(0.0036))
+    act = (warn, driver_km(res, "DRV-A"), driver_km(alone, "DRV-A"))
+    record("TC-67", IMPL, exp, act)
+    assert act[0] == exp[0] and close(act[1], exp[1]) and close(act[2], exp[2])
 
 
 def test_TC_25_same_timestamp_different_coordinates_no_division_by_zero(record):
@@ -613,16 +651,16 @@ def test_TC_59_same_seed_gives_identical_dataset(record, tmp_path):
 
 @pytest.mark.parametrize("name,needle", [
     ("F_INVALID_swapped.csv", "swapped"),         # TC-60
-    ("F_INVALID_offset.csv", "offset"),           # TC-61
-    ("F_INVALID_range.csv", "out of range"),      # TC-63
-    ("F_INVALID_missing_col.csv", "missing"),     # TC-64
+    ("F_INVALID_offset.csv", "offset"),           # X-01
+    ("F_INVALID_range.csv", "out of range"),      # X-03
+    ("F_INVALID_missing_col.csv", "missing"),     # X-04
 ])
-def test_TC_60_to_64_pipeline_rejects_bad_pings(record, name, needle):
+def test_TC_60_and_X_01_X_03_X_04_pipeline_rejects_bad_pings(record, name, needle):
     """Given a bad pings file (swapped lat/lon, UTC offset, out-of-range coordinate or missing column),
     When fixed.py loads it,
     Then it raises InputError naming the problem, and no run starts."""
-    tc = {"F_INVALID_swapped.csv": "TC-60", "F_INVALID_offset.csv": "TC-61",
-          "F_INVALID_range.csv": "TC-63", "F_INVALID_missing_col.csv": "TC-64"}[name]
+    tc = {"F_INVALID_swapped.csv": "TC-60", "F_INVALID_offset.csv": "X-01",
+          "F_INVALID_range.csv": "X-03", "F_INVALID_missing_col.csv": "X-04"}[name]
     with pytest.raises(fixed.InputError) as ei:
         fixed.run_file(fx(name))
     record(tc, IMPL, f"InputError with '{needle}'", str(ei.value).replace("\n", " | ")[:200])

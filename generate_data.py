@@ -321,10 +321,10 @@ def build_fixtures(fx_dir, seed):
     z += _rows("DRV-H", d7 + timedelta(hours=10), on_eq(                                               # TC-11
         [0.0040, 0.0052, 0.0064, 0.0076, 0.0068, 0.0056, 0.0044, 0.0050, 0.0062, 0.0074]))
     z += _rows("DRV-I", d7 + timedelta(hours=11), on_eq([0.0050, 0.0065, 0.0080]))                     # TC-15
-    z += _rows("DRV-J", d7 + timedelta(hours=12), on_eq([0.0062 + 0.0004 * i for i in range(5)]),       # TC-67
+    z += _rows("DRV-J", d7 + timedelta(hours=12), on_eq([0.0062 + 0.0004 * i for i in range(5)]),       # X-07
                step_s=[0, 10, 20.1, 30.09, 40.09])          # intervals 10, 10.1, 9.99, 10 s
-    z += _rows("DRV-K", d7 + timedelta(hours=13), [(-0.0004, 0.0), (0.0, 0.0), (0.0004, 0.0)])        # TC-68 lon < 0
-    z += _rows("DRV-L", d7 + timedelta(hours=14),                                                     # TC-68 lat < 0
+    z += _rows("DRV-K", d7 + timedelta(hours=13), [(-0.0004, 0.0), (0.0, 0.0), (0.0004, 0.0)])        # X-08 lon < 0
+    z += _rows("DRV-L", d7 + timedelta(hours=14),                                                     # X-08 lat < 0
                [(0.0070, 0.0), (0.0074, -0.0004), (0.0078, 0.0), (0.0082, 0.0)])
     files["F_ZONE.csv"] = z
 
@@ -359,7 +359,7 @@ def build_fixtures(fx_dir, seed):
     nn = on_eq([0.0062 + 0.0004 * i for i in range(6)])
     nn[2] = (nn[2][0], round(20 / DEG_M, 9))                                                           # RTC-04
     n += _rows("DRV-N", d7 + timedelta(hours=12), nn)
-    jump1499 = round(149.9 / 3.6 * 10 / DEG_M, 9)                                                      # TC-66
+    jump1499 = round(149.9 / 3.6 * 10 / DEG_M, 9)                                                      # X-06
     n += _rows("DRV-O", d7 + timedelta(hours=13), on_eq([0.0056, 0.0060, 0.0060 + jump1499, 0.0099, 0.0100]))
     files["F_NOISE.csv"] = n
     files["F_STATIONARY.csv"] = _rows("DRV-M", d7 + timedelta(hours=1), [(0.0080, 0.0)] * 1441)        # TC-28
@@ -388,8 +388,8 @@ def build_fixtures(fx_dir, seed):
     F = _rows("DRV-F", d7 + timedelta(hours=4), on_eq([0.0062 + 0.0004 * i for i in range(6)]))         # RTC-05
     dup += (F[:2] + [dict(F[1], ping_id="102", lat="0.0002")] + F[2:4] +
             [dict(F[3], ping_id="104", lat="0.0002"), dict(F[3], ping_id="105", lat="-0.0002")] + F[4:])
-    G = _rows("DRV-G", d7 + timedelta(hours=8), on_eq([0.0070, 0.0070, 0.0074]))     # TC-69 new ts, same coords
-    H = _rows("DRV-H", d7 + timedelta(hours=8), on_eq([0.0070, 0.0074, 0.0078]))     # TC-70 new ts, new coords
+    G = _rows("DRV-G", d7 + timedelta(hours=8), on_eq([0.0070, 0.0070, 0.0074]))     # X-09 new ts, same coords
+    H = _rows("DRV-H", d7 + timedelta(hours=8), on_eq([0.0070, 0.0074, 0.0078]))     # X-10 new ts, new coords
     dup += G + H
     files["F_DUPLICATES.csv"] = dup
 
@@ -457,7 +457,7 @@ def build_fixtures(fx_dir, seed):
     files["F_INVALID_range.csv"] = [dict(r) for r in bnd]
     files["F_INVALID_range.csv"][4]["lat"] = "91.0"
     files["F_INVALID_range.csv"][6]["lon"] = "-181.5"
-    # TC-71: the TC-69 and TC-70 drivers both send a ping stamped 08:59:99 (second 99 does not exist)
+    # X-11: the X-09 and X-10 drivers both send a ping stamped 08:59:99 (second 99 does not exist)
     bad = "2026-11-07T08:59:99Z"
     files["F_INVALID_bad_second.csv"] = [G[0], dict(G[1], ts_utc=bad), H[0], dict(H[1], ts_utc=bad)]
 

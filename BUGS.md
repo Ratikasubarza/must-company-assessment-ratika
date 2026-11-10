@@ -33,7 +33,7 @@ records, from an actual run, which tests fail when **only** that bug is switched
 - With every bug on, BUG-14 hides BUG-15 on F_DAYCUT. UTC dates never change at 15:00Z, so no
   segment "crosses midnight" there. TC-53 therefore runs on the full dataset: DRV-04 and DRV-11
   cross 00:00Z, and that exposes the combination.
-- BUG-03 also moves the speed limit. A legitimate 149.9 km/h step (F_NOISE DRV-O, TC-66) reads about
+- BUG-03 also moves the speed limit. A legitimate 149.9 km/h step (F_NOISE DRV-O, X-06) reads about
   150.07 km/h with the equatorial radius, so old_reference.py with only BUG-03 on drops it as a spike.
 - BUG-05 and BUG-09 together turn an off-road ping into a "speed" drop of the *previous* ping,
   so TC-31 also checks the dropped ping's status, not only the km.

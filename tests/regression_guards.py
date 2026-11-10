@@ -7,7 +7,7 @@ old_reference.py the outcome is only recorded. Guards compare only outputs both
 implementations produce (ping status, km, duplicate events, input rejection).
 
 Covered: every 'Worst' case in the Test Cases tab that runs a pipeline (TC-19, 25, 26,
-27, 35, 41, 46, 52; TC-34 is already a bug check) plus the added edge cases TC-66..TC-71.
+27, 35, 41, 46, 52; TC-34 is already a bug check) plus the added edge cases X-06..X-11.
 """
 from __future__ import annotations
 
@@ -127,7 +127,7 @@ def rounding_error_within_tolerance(impl):
     return True, abs(rounded - sum(res.daily_m.values()) / 1000) <= 0.001
 
 
-@guard("TC-66")
+@guard("X-06")
 def speed_149_9_kmh_kept(impl):
     """Given F_NOISE DRV-O: ping 3 is 149.9 km/h from ping 2,
     When the pipeline runs,
@@ -136,7 +136,7 @@ def speed_149_9_kmh_kept(impl):
     return (["ACCEPTED"] * 5, deg_km(0.0040)), (_statuses(res, "DRV-O", range(1, 6)), driver_km(res, "DRV-O"))
 
 
-@guard("TC-67")
+@guard("X-07")
 def intervals_10_1s_and_9_99s_do_not_change_distance(impl):
     """Given F_ZONE DRV-J: intervals 10, 10.1, 9.99, 10 s inside Z1,
     When the pipeline runs,
@@ -145,7 +145,7 @@ def intervals_10_1s_and_9_99s_do_not_change_distance(impl):
     return (["ACCEPTED"] * 5, deg_km(0.0016)), (_statuses(res, "DRV-J", range(1, 6)), driver_km(res, "DRV-J"))
 
 
-@guard("TC-68")
+@guard("X-08")
 def negative_coordinates(impl):
     """Given F_ZONE DRV-K (negative longitude, outside Z1) and DRV-L (negative latitude, inside Z1),
     When the pipeline runs,
@@ -161,7 +161,7 @@ def _no_dup(res, driver):
     return sum(e["driver_id"] == driver and e["event_type"].startswith("DUPLICATE") for e in res.events)
 
 
-@guard("TC-69")
+@guard("X-09")
 def new_timestamp_same_coordinates_not_duplicate(impl):
     """Given F_DUPLICATES DRV-G: two pings at the same coordinates, 10 s apart, then a move,
     When the pipeline runs,
@@ -171,7 +171,7 @@ def new_timestamp_same_coordinates_not_duplicate(impl):
             (_statuses(res, "DRV-G", (1, 2, 3)), _no_dup(res, "DRV-G"), driver_km(res, "DRV-G")))
 
 
-@guard("TC-70")
+@guard("X-10")
 def new_timestamp_new_coordinates_not_duplicate(impl):
     """Given F_DUPLICATES DRV-H: three pings 10 s apart at different coordinates,
     When the pipeline runs,
@@ -181,7 +181,7 @@ def new_timestamp_new_coordinates_not_duplicate(impl):
             (_statuses(res, "DRV-H", (1, 2, 3)), _no_dup(res, "DRV-H"), driver_km(res, "DRV-H")))
 
 
-@guard("TC-71")
+@guard("X-11")
 def impossible_time_08_59_99_rejected(impl):
     """Given F_INVALID_bad_second: two drivers send a ping stamped 08:59:99Z (line 3 and line 5),
     When the pings are loaded,
