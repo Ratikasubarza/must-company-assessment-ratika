@@ -1,6 +1,6 @@
 # directive.md: GPS distance QA tool
 
-All data, drivers, roads and zones are SYNTHETIC. Repository: REPO_URL
+All data, drivers, roads and zones are SYNTHETIC. Repository: https://github.com/Ratikasubarza/must-company-assessment-ratika
 
 Effort: ___ hours
 
@@ -40,7 +40,7 @@ the fix with a checker and tests whose numbers all come from real runs.
 12. Regression tests fail on old_reference.py and pass on fixed.py; every bug is caught by at least one.
 13. Every number in a report comes from an actual run; every added assumption gets an ID in intent.md.
 
-Full rules and assumptions A1-A23: [intent.md](REPO_URL/blob/main/intent.md).
+Full rules and assumptions A1-A23: [intent.md](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/intent.md).
 
 ## Completion criteria (all measurable)
 | # | Criterion | Target |
@@ -61,21 +61,21 @@ Full rules and assumptions A1-A23: [intent.md](REPO_URL/blob/main/intent.md).
 ## Appendix: results and handoff
 
 **Run cited:** `20261110T140732Z` on commit `e57bd9e` (branch build/gps-qa-tool): git_dirty = no, overall OK,
-pytest 116 passed, 28 xfailed, 5 xpassed. Row in [results/history/runs.csv](REPO_URL/blob/main/results/history/runs.csv);
-full log: [run.log](REPO_URL/blob/main/results/history/20261110T140732Z/run.log). Every number below comes from this run.
+pytest 116 passed, 28 xfailed, 5 xpassed. Row in [results/history/runs.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/history/runs.csv);
+full log: [run.log](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/history/20261110T140732Z/run.log). Every number below comes from this run.
 
 **Tool, dataset, fix and regression checks**
-- Checker: [qa_check.py](REPO_URL/blob/main/qa_check.py)
-- Dataset (seed 42, 2,525 pings, 12 drivers, 54 injected faults): [data/pings.csv](REPO_URL/blob/main/data/pings.csv)
-  and its ground truth [data/ground_truth.csv](REPO_URL/blob/main/data/ground_truth.csv)
-- The day-cut fix in fixed.py: [local_date, UTC+9](REPO_URL/blob/main/fixed.py#L74-L76) and
-  [each segment takes the day of its starting ping](REPO_URL/blob/main/fixed.py#L399)
-- Regression checks: [TC-43, BUG-14](REPO_URL/blob/main/tests/regression_checks.py#L198-L205) and
-  [TC-53, BUG-15](REPO_URL/blob/main/tests/regression_checks.py#L208-L218)
-- The sheet's "Regression Test Cases" tab is included as [docs/Test-assessment-Must Company - Ratika - Regression Test Cases.csv](REPO_URL/blob/main/docs/Test-assessment-Must%20Company%20-%20Ratika%20-%20Regression%20Test%20Cases.csv) (its IDs TC-01..TC-14 are RTC-01..RTC-14 in the tests). The "Test Cases" tab (TC-01..TC-60) and the AC tab are not included in the repository.
+- Checker: [qa_check.py](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/qa_check.py)
+- Dataset (seed 42, 2,525 pings, 12 drivers, 54 injected faults): [data/pings.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/data/pings.csv)
+  and its ground truth [data/ground_truth.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/data/ground_truth.csv)
+- The day-cut fix in fixed.py: [local_date, UTC+9](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/fixed.py#L74-L76) and
+  [each segment takes the day of its starting ping](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/fixed.py#L399)
+- Regression checks: [TC-43, BUG-14](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/tests/regression_checks.py#L198-L205) and
+  [TC-53, BUG-15](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/tests/regression_checks.py#L208-L218)
+- The sheet's "Regression Test Cases" tab is included as [docs/Test-assessment-Must Company - Ratika - Regression Test Cases.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/docs/Test-assessment-Must%20Company%20-%20Ratika%20-%20Regression%20Test%20Cases.csv) (its IDs TC-01..TC-14 are RTC-01..RTC-14 in the tests). The "Test Cases" tab (TC-01..TC-60) and the AC tab are not included in the repository.
 
-**Checker, fixed vs old** ([qa_fixed](REPO_URL/blob/main/results/qa_fixed/qa_summary.txt),
-[qa_old](REPO_URL/blob/main/results/qa_old/qa_summary.txt)):
+**Checker, fixed vs old** ([qa_fixed](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/qa_fixed/qa_summary.txt),
+[qa_old](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/qa_old/qa_summary.txt)):
 | | Driver-days failed | Fault detection (54 injected) | Result |
 |---|---|---|---|
 | fixed.py | 0 of 15 | TP 62, FP 0, FN 0; precision 1.000, recall 1.000 | PASS (exit 0) |
@@ -83,27 +83,27 @@ full log: [run.log](REPO_URL/blob/main/results/history/20261110T140732Z/run.log)
 
 (TP counts 62 for 54 faults because each of the 8 conflicting duplicates is checked twice: dropped row and conflict log.)
 
-**Totals** ([before_after.csv](REPO_URL/blob/main/results/before_after.csv)): ground truth 53.802293 km,
+**Totals** ([before_after.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/before_after.csv)): ground truth 53.802293 km,
 fixed.py 53.802293 km, old_reference.py (all 17 bugs) 58.872196 km.
 
-**Day-cut fix, before/after** ([daycut_before_after.csv](REPO_URL/blob/main/results/daycut_before_after.csv)):
+**Day-cut fix, before/after** ([daycut_before_after.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/daycut_before_after.csv)):
 before = old_reference.py with only BUG-14 and BUG-15 on, after = fixed.py. Total 53.714992 -> 53.802292 km
 (ground truth 53.802293 km, summed from six-decimal rows). After = ground truth on 17 of 17 driver-days; 10 of 17
 driver-days change by more than 1 m. The +0.087300 km is DRV-11's km that were missing from every daily report
 before the fix. Per local day (before -> after): 2026-11-07 16.886616 -> 14.953739; 2026-11-08 20.773015 ->
 19.660590; 2026-11-09 11.865322 -> 9.891504; 2026-11-10 4.190039 -> 9.296460.
 
-**Why the day cut first** ([problem_impact.csv](REPO_URL/blob/main/results/problem_impact.csv)): with only
+**Why the day cut first** ([problem_impact.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/problem_impact.csv)): with only
 BUG-14/15 on, gross km wrong is 20.081898 km over 10 of 17 driver-days (next: noise, 2.269227 km over 5 of 15).
-Ranking, reasoning and per-problem evidence: [intent.md, "Ranking and choice"](REPO_URL/blob/main/intent.md#ranking-and-choice).
+Ranking, reasoning and per-problem evidence: [intent.md, "Ranking and choice"](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/intent.md#ranking-and-choice).
 
-**pytest** ([test_results.csv](REPO_URL/blob/main/results/test_results.csv)): 116 passed, 28 xfailed, 5 xpassed
+**pytest** ([test_results.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/test_results.csv)): 116 passed, 28 xfailed, 5 xpassed
 (run 20261110T140732Z). The 28 xfailed are
 18 bug-regression tests on old_reference (must fail), 9 guards on old_reference (recorded only) and NC-01 (known
 limitation). The 5 xpassed are guards that old_reference happens to pass.
 
-**Bugs and regression** ([BUGS.md](REPO_URL/blob/main/BUGS.md),
-[regression_summary.md](REPO_URL/blob/main/results/regression_summary.md)): 17 of 17 bugs caught alone;
+**Bugs and regression** ([BUGS.md](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/BUGS.md),
+[regression_summary.md](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/regression_summary.md)): 17 of 17 bugs caught alone;
 14 of 14 guards pass on fixed.py.
 
 **Open items for the next owner**
@@ -112,11 +112,11 @@ limitation). The 5 xpassed are guards that old_reference happens to pass.
 - New test IDs not yet in the sheet: TC-00, TC-61..TC-71, NC-01 (intent.md P-09).
 - Measured limitations, not fixed: parked jitter adds 1.655136 km per hour (L01); zig-zag inside 100 m
   counts +312.3% (L02); one bad row withholds all 53.802292 km (L09). All 11:
-  [limitations.csv](REPO_URL/blob/main/results/limitations.csv), measured by
-  [tools/limitations.py](REPO_URL/blob/main/tools/limitations.py).
+  [limitations.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/limitations.csv), measured by
+  [tools/limitations.py](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/tools/limitations.py).
 - TC-56 copies only committed files: commit before running `run_all.py`.
 
-**Reproduce:** see [README.md](REPO_URL/blob/main/README.md); one command, `python run_all.py`
-([run_all.py](REPO_URL/blob/main/run_all.py), [tools/problem_impact.py](REPO_URL/blob/main/tools/problem_impact.py)).
-History of every run: [results/history/](REPO_URL/tree/main/results/history).
-AI usage log: [AI_LOG.md](REPO_URL/blob/main/AI_LOG.md).
+**Reproduce:** see [README.md](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/README.md); one command, `python run_all.py`
+([run_all.py](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/run_all.py), [tools/problem_impact.py](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/tools/problem_impact.py)).
+History of every run: [results/history/](https://github.com/Ratikasubarza/must-company-assessment-ratika/tree/main/results/history).
+AI usage log: [AI_LOG.md](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/AI_LOG.md).

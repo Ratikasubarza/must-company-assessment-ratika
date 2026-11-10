@@ -9,7 +9,7 @@ are SYNTHETIC.** The rules live in [intent.md](intent.md) (assumptions A1-A23, B
 Requires Python 3.11.
 
 ```bash
-git clone <repo-url> gps-qa && cd gps-qa
+git clone https://github.com/Ratikasubarza/must-company-assessment-ratika.git gps-qa && cd gps-qa
 ```
 
 ```bash
@@ -97,7 +97,7 @@ Checker help: `python qa_check.py --help`. Exit codes: 0 pass, 1 check failure, 
 | `tests/` | `test_functional.py` (fixed.py), `test_regression.py` (bug regressions: old fails, fixed passes; worst-case guards: fixed must pass; TC-57/58), `test_checker.py` (qa_check.py). Checks live in `regression_checks.py` and `regression_guards.py`. Each test is named by its TC_ID and has Given/When/Then. |
 | `tools/` | `problem_impact.py` (each bug group on alone vs no bugs; day-cut before/after), `limitations.py` (11 measured limitations of fixed.py). Both run in step 5. |
 | `docs/` | `Test-assessment-Must Company - Ratika - Regression Test Cases.csv`: the sheet's "Regression Test Cases" tab as CSV (tested as RTC-01..RTC-14). The "Test Cases" tab (TC-01..TC-60) is not in the repo. |
-| `directive.md` | Objective, scope, requirements, completion criteria and results handoff (standalone; links use `REPO_URL`). |
+| `directive.md` | Objective, scope, requirements, completion criteria and results handoff (standalone; links point to https://github.com/Ratikasubarza/must-company-assessment-ratika, branch main). |
 | `results/` | Latest run: `test_results.csv`, `before_after.csv`, `regression_summary.csv/.md`, `regression_guards.csv`, `problem_impact.csv`, `problem_examples.csv`, `daycut_before_after.csv`, `limitations.csv`, `qa_*` and `problem_qa/` checker reports, `RUN_ID`. Every run: `history/<run_id>/` and `history/runs.csv`. |
 
 ## Test IDs
