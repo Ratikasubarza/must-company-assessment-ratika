@@ -1,8 +1,11 @@
 # directive.md: GPS distance QA tool
 
+**Bottom line:** I fixed the day cut first. It put km on the wrong local day for 10 of 17 driver-days; after the fix, 17 of 17 match ground truth.
+The old pipeline, with all 17 bugs, reported 58.872196 km; the correct total is 53.802293 km.
+
 All data, drivers, roads and zones are SYNTHETIC. Repository: https://github.com/Ratikasubarza/must-company-assessment-ratika
 
-Effort: ___ hours
+Effort: about 6 hours of my own focused time, in short sessions on 7, 8 and 10 Nov 2026. Not counted: time waiting for the AI or the test suite, and slow runs caused by iCloud.
 
 ## Objective
 Build and verify a QA tool for pay-per-km GPS distance. Drivers send a ping every 10 s and are paid
@@ -54,7 +57,7 @@ Full rules and assumptions A1-A23: [intent.md](https://github.com/Ratikasubarza/
 | C7 | Regression checks: fail on old / pass on fixed | 18 / 18 and 18 / 18 |
 | C8 | Worst-case regression guards pass on fixed.py | 14 / 14 |
 | C9 | pytest | 0 failed |
-| C10 | Every TC-01..TC-60 and RTC-01..RTC-14 has a test | 0 missing |
+| C10 | Sheet coverage: docs/test_cases.csv (TC-01..TC-69) and docs/regression_test_cases.csv (RTC-01..RTC-14) | 68 of 69 TC cases covered (62 by a test with the same ID, 6 via the mapping in intent.md); TC-69 on fixed.py only (missing feature in the old code, intent.md P-12); 14 of 14 RTC |
 | C11 | Same seed gives the same dataset | sha256 matches the pinned values (TC-59) |
 | C12 | No committed file contains a local home-folder path or the user name | 0 files (grep) |
 
@@ -72,7 +75,7 @@ full log: [run.log](https://github.com/Ratikasubarza/must-company-assessment-rat
   [each segment takes the day of its starting ping](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/fixed.py#L399)
 - Regression checks: [TC-43, BUG-14](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/tests/regression_checks.py#L198-L205) and
   [TC-53, BUG-15](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/tests/regression_checks.py#L208-L218)
-- The sheet's "Regression Test Cases" tab is included as [docs/Test-assessment-Must Company - Ratika - Regression Test Cases.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/docs/Test-assessment-Must%20Company%20-%20Ratika%20-%20Regression%20Test%20Cases.csv) (its IDs TC-01..TC-14 are RTC-01..RTC-14 in the tests). The "Test Cases" tab (TC-01..TC-60) and the AC tab are not included in the repository.
+- The test-case sheet is in the repository: [docs/test_cases.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/docs/test_cases.csv) ("Test Cases" tab, TC-01..TC-69) and [docs/regression_test_cases.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/docs/regression_test_cases.csv) ("Regression Test Cases" tab; its IDs TC-01..TC-14 are RTC-01..RTC-14 in the tests). The AC tab is not included.
 
 **Checker, fixed vs old** ([qa_fixed](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/qa_fixed/qa_summary.txt),
 [qa_old](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/qa_old/qa_summary.txt)):
@@ -107,9 +110,9 @@ limitation). The 5 xpassed are guards that old_reference happens to pass.
 14 of 14 guards pass on fixed.py.
 
 **Open items for the next owner**
-- The Test Cases sheet puts local midnight at 17:00Z (TC-39, TC-40, RTC-06); under UTC+9 it is 15:00Z
+- The Test Cases sheet puts local midnight at 17:00Z ([TC-39 and TC-40](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/docs/test_cases.csv#L40-L41); [RTC-06](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/docs/regression_test_cases.csv#L7)); under UTC+9 it is 15:00Z
   (intent.md P-03). The sheet should be corrected.
-- New test IDs not yet in the sheet: TC-00, TC-61..TC-71, NC-01 (intent.md P-09).
+- New test IDs not yet in the sheet: TC-00, X-01..X-11, NC-01 (intent.md P-09).
 - Measured limitations, not fixed: parked jitter adds 1.655136 km per hour (L01); zig-zag inside 100 m
   counts +312.3% (L02); one bad row withholds all 53.802292 km (L09). All 11:
   [limitations.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/limitations.csv), measured by
