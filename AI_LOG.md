@@ -95,3 +95,77 @@ data/ and fixtures/ byte-identical (sha256 before = after); it writes only its 4
 **Changed:** qa_check.py has a `--note` option (one line at the top of the report; no check changes);
 run_all.py step 4c passes a note saying the FAIL is expected. TC-55 now asserts the note is the first line,
 and fails on a copy of qa_check.py that ignores `--note`.
+
+## Entry 8 - 2026-11-10 - "Is the 8 Nov data still there? Every run should be stored to keep a history of fails and bugs"
+
+**Found:** the 8 Nov results were still on disk (only left out of the commit), but run_all.py overwrote
+results/ on every run, so the next run would have erased them. No history was kept.
+**Changed:** run_all.py now saves every run (including gate-stopped and --no-tests runs) to
+results/history/<run_id>/ with run.log and run_info.txt, and appends a row to results/history/runs.csv.
+results/ is cleared at the start of a run (history kept); never-archived results are archived first as
+`unarchived_<time>`. The 8 Nov run was archived as 20261108T115954Z from its own files and log (times are
+file modification times). TC-56 now runs the README command twice and checks both runs are in history;
+it fails on the previous run_all.py (0 history rows) and passes on the new one.
+**Choice stated:** history lives in results/history/, not data/, because step 1 regenerates data/.
+
+## Entry 9 - 2026-11-10 - "Finish the write-up: privacy, problem impact, ranking section, directive.md, consistency check"
+
+**Prompt (summary):** remove local paths from logs and scripts; mark the 8 Nov history row's git fields n/a;
+measure each bug group's impact (tools/problem_impact.py) and every left-out limitation (tools/limitations.py),
+both run by run_all.py; add "Ranking and choice" to intent.md with the user's reason inserted verbatim (numbers
+checked only); write directive.md; cross-check numbers across the documents.
+
+**What the AI's output got wrong or nearly missed:**
+- `.gitignore` had `*.log`, so every results/history/*/run.log would have been left out of git without notice.
+  Added an exception for history logs.
+- run_all.py printed the interpreter path relative to the repo; from a copy outside the repo this produced
+  a relative path running through the home folder and user name. Pytest failure output also carried the temp folder with the user name. Logs are now
+  scrubbed before they are stored, and the interpreter prints as `python`.
+- directive.md's own completion criterion quoted the home-folder path prefix it was meant to forbid, so the privacy grep hit it. Reworded.
+- tools/limitations.py first reported L06 (midnight-crossing segment) as 0.0 km. The cause was real: in
+  data/pings.csv every crossing segment ends exactly at 15:00:00Z. A straddling segment from fixtures/F_DAYCUT.csv
+  was added so the limitation gets a real number (0.022239 km).
+- The first cross-document check merged CSV fields into wrong numbers (a comma in the number pattern); fixed and re-run.
+- "about 150.07 km/h" (BUGS.md, Entry 2) and "+112 m" (BUGS.md) had been calculated, not measured. Both were
+  measured this time: 150.0679 km/h and 100,112.023 m vs 100,000.000 m.
+- The 8 Nov row's git_dirty was also set to n/a (the request named only branch and commit).
+
+**Number check on the user's ranking text:** all numbers match the measurements except the claim that noise is
+"the only problem that makes the advertiser pay more overall" (late pings, duplicates and Earth radius also raise
+the total). "Close second" was flagged as not supported by gross km wrong. The text itself was not changed.
+
+**Run history:** run 20261110T134354Z is recorded as BAD (`1 failed, 115 passed, 28 xfailed, 5 xpassed`): TC-56
+copies only committed files and tools/ was not yet committed. A scratch clone with everything committed gives
+`116 passed, 28 xfailed, 5 xpassed`.
+
+## Entry 10 - 2026-11-10 - "Fix the wrong claim, redo the day-cut before/after, fix the directive links"
+
+**Number check of the ranking text in intent.md** (moved here from intent.md on request; all values from
+`python tools/problem_impact.py` and related commands on data/pings.csv):
+- "10 of 17 driver-days are wrong": `day_cut … off >1 m: 10/17 (union)`. Matches.
+- "about 10 km of the 53.8 km land on the wrong day": over 9.997299 km, under 10.084599 km; baseline 53.802292 km. Matches.
+- "The total barely moves": -0.087300 km (-0.16%). Matches.
+- "DRV-03 on 2026-11-08" shows 0 km with the day-cut bugs (correct 1.161358 km). Matches.
+- "every shift that runs past 15:00Z": DRV-03, 04, 07, 10 and 11 are exactly the 10 wrong driver-days. Matches.
+- "a single line, the UTC date used instead of UTC+9": BUG-14 alone makes 10/17 driver-days wrong; BUG-15 alone 1/15. Matches.
+- First version of the third paragraph: "the only problem that makes the advertiser pay more overall" did not
+  match (late pings +1.325634 km, duplicates +0.070231 km, Earth radius +0.060271 km also raise the total), and
+  "close second" was not supported (gross km wrong 2.269227 vs 20.081898). The user replaced the paragraph.
+- Replacement paragraph: "the problem that adds the most to what the advertiser pays overall (+2.27 km, +4.2%)":
+  noise +2.269227 km (+4.22%) is the largest total increase of any group. "5 driver-days, compared with 10":
+  5/15 vs 10/17. "mainly one party": over 2.269227, under 0. All match.
+
+**Changed:**
+- Day-cut before/after now compares old_reference with only BUG-14/15 on against fixed.py, with ground truth.
+  Measured: total 53.714992 -> 53.802292 km (ground truth 53.802293 summed from six-decimal rows); after = ground
+  truth on 17/17 driver-days (union, absent = 0). The earlier all-bugs comparison is kept as one line of context
+  (58.872196 -> 58.959594 km).
+- The day cut's -0.087300 km total change was measured, not inferred: a new problem_impact.csv column
+  (km in driver totals but missing from every daily report) gives exactly DRV-11 0.087300 km; every other group gives 0.
+- directive.md now links qa_check.py, data/pings.csv, data/ground_truth.csv, fixed.py#L74-L76 and #L399, and
+  tests/regression_checks.py#L198-L205 (TC-43) and #L208-L218 (TC-53); all 25 links checked to resolve after commit.
+
+**Found while checking (the AI's own earlier mistake):** run_all.py measured git_dirty at the END of a run,
+after rewriting results/. Once results/ is committed, every run would have reported git_dirty = yes because of
+its own outputs. git state is now taken at the start of the run, excluding results/. A simulated
+commit-then-run in a scratch clone gave git_dirty = no and overall OK on two consecutive runs.

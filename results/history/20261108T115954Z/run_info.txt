@@ -1,0 +1,29 @@
+run_id: 20261108T115954Z
+started: 2026-11-08T11:59:54+00:00
+finished: 2026-11-08T12:12:11+00:00
+git_branch: n/a
+git_commit: n/a
+git_dirty: n/a
+overall: OK
+bad_steps: 
+pytest: 93 passed, 18 xfailed in 732.49s (0:12:12)
+qa_F_BOUNDARY: PASS
+qa_fixed: PASS
+qa_fixed_clean: PASS
+qa_old: FAIL
+bugs_caught_alone: 17/17
+guards_pass_on_fixed: not reported
+note: archived on 2026-11-10 from the 8 Nov run (before guards, RTC-01/02/08/09, qa_old note); times are file modification times; git n/a: no branch or commit of this work existed yet
+steps:
+  OK   exit 0  1. generate data (seed 42)
+  OK   exit 0  2a. fixed.py on F_BOUNDARY
+  OK   exit 0  2b. GATE: qa_check vs hand calculation (F_BOUNDARY)
+  OK   exit 0  3a. fixed.py on data/pings.csv
+  OK   exit 0  3b. fixed.py on data/pings_clean.csv
+  OK   exit 0  3c. old_reference.py on data/pings.csv
+  OK   exit 0  4a. qa_check: fixed, faulty dataset (expect PASS)
+  OK   exit 0  4b. qa_check: fixed, clean dataset (expect PASS)
+  OK   exit 1  4c. qa_check: old, faulty dataset (expect FAIL, exit 1)
+  OK   exit 0  5a. regression summary
+  OK   exit 0  5b. before / after
+  OK   exit 0  6. pytest

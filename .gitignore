@@ -14,3 +14,6 @@ worksheets/
 *.xlsx
 fixtures/expected_*.csv
 *.log
+
+# run logs are part of the run history and must be committed
+!results/history/*/run.log

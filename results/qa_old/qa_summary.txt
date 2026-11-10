@@ -1,0 +1,108 @@
+NOTE: old_reference.py is EXPECTED to FAIL this check: it contains the 17 planted bugs in BUGS.md, and this report shows the checker catching them. It is not a defect in fixed.py or qa_check.py.
+QA CHECK (SYNTHETIC data)
+pings: data/pings.csv (2525 rows)   report: out/old/daily_km.csv
+daily rows compared: 17   tolerance: 0.001 km   failed: 17
+fault detection: injected 54, TP 18, FP 13, FN 44, precision 0.581, recall 0.290
+  DROPPED_OFFROAD      TP  10  FP   0  FN   0
+  DROPPED_SPEED        TP   8  FP  13  FN   0
+  DUPLICATE_CONFLICT   TP   0  FP   0  FN   8
+  DUPLICATE_DROPPED    TP   0  FP   0  FN  18
+  INTERVAL_WARNING     TP   0  FP   0  FN   8
+  LATE_ARRIVAL         TP   0  FP   0  FN  10
+interval summary (violations = gaps + short intervals):
+  DRV-01   pings   230  regular   229  gaps   0  short   0
+  DRV-02   pings   196  regular   193  gaps   2  short   0
+  DRV-03   pings   215  regular   213  gaps   1  short   0
+  DRV-04   pings   227  regular   225  gaps   1  short   0
+  DRV-05   pings   216  regular   214  gaps   1  short   0
+  DRV-06   pings   217  regular   216  gaps   0  short   0
+  DRV-07   pings   195  regular   194  gaps   0  short   0
+  DRV-08   pings   204  regular   202  gaps   1  short   0
+  DRV-09   pings   191  regular   188  gaps   2  short   0
+  DRV-10   pings   202  regular   201  gaps   0  short   0
+  DRV-11   pings   195  regular   194  gaps   0  short   0
+  DRV-12   pings   219  regular   218  gaps   0  short   0
+interval violations: 8
+  GAP driver DRV-02 ping 70: 20 s
+  GAP driver DRV-02 ping 143: 20 s
+  GAP driver DRV-03 ping 176: 30 s
+  GAP driver DRV-04 ping 145: 20 s
+  GAP driver DRV-05 ping 110: 30 s
+  GAP driver DRV-08 ping 140: 30 s
+  GAP driver DRV-09 ping 50: 30 s
+  GAP driver DRV-09 ping 163: 30 s
+RESULT: FAIL (74 failure(s))
+  daily km DRV-01 2026-11-07: expected 2.742678, got 4.202117 (diff +1.459439)
+  daily km DRV-02 2026-11-07: expected 5.383819, got 5.884637 (diff +0.500818)
+  daily km DRV-03 2026-11-07: expected 1.144128, got 2.801773 (diff +1.657645)
+  daily km DRV-03 2026-11-08: expected 1.161358, got 0.000000 (diff -1.161358)
+  daily km DRV-04 2026-11-07: expected 0.000000, got 0.935410 (diff +0.935410)
+  daily km DRV-04 2026-11-08: expected 2.312939, got 1.823550 (diff -0.489389)
+  daily km DRV-05 2026-11-08: expected 5.286504, got 5.198628 (diff -0.087876)
+  daily km DRV-06 2026-11-08: expected 3.832871, got 4.514021 (diff +0.681150)
+  daily km DRV-07 2026-11-08: expected 1.088569, got 4.909955 (diff +3.821386)
+  daily km DRV-07 2026-11-09: expected 3.045302, got 0.000000 (diff -3.045302)
+  daily km DRV-08 2026-11-08: expected 5.978349, got 6.149621 (diff +0.171272)
+  daily km DRV-09 2026-11-09: expected 4.571235, got 4.247206 (diff -0.324029)
+  daily km DRV-10 2026-11-09: expected 2.274967, got 6.096493 (diff +3.821526)
+  daily km DRV-10 2026-11-10: expected 3.249215, got 0.000000 (diff -3.249215)
+  daily km DRV-11 2026-11-09: expected 0.000000, got 1.741887 (diff +1.741887)
+  daily km DRV-11 2026-11-10: expected 6.047244, got 4.654574 (diff -1.392670)
+  daily km DRV-12 2026-11-07: expected 5.683115, got 5.712324 (diff +0.029209)
+  fault detection FP: DROPPED_SPEED driver DRV-01 ping 189
+  fault detection FP: DROPPED_SPEED driver DRV-02 ping 80
+  fault detection FP: DROPPED_SPEED driver DRV-03 ping 100
+  fault detection FP: DROPPED_SPEED driver DRV-05 ping 10001
+  fault detection FP: DROPPED_SPEED driver DRV-06 ping 83
+  fault detection FP: DROPPED_SPEED driver DRV-08 ping 60
+  fault detection FP: DROPPED_SPEED driver DRV-08 ping 65
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 175
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 180
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 32
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 73
+  fault detection FP: DROPPED_SPEED driver DRV-10 ping 25
+  fault detection FP: DROPPED_SPEED driver DRV-10 ping 87
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-01 ping 109
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-02 ping 174
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-03 ping 114
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-04 ping 54
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-05 ping 124
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-06 ping 114
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-08 ping 192
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-11 ping 173
+  fault detection FN: DUPLICATE_DROPPED driver DRV-01 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-02 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-02 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-02 ping 10003
+  fault detection FN: DUPLICATE_DROPPED driver DRV-03 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-03 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-04 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-04 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-04 ping 10003
+  fault detection FN: DUPLICATE_DROPPED driver DRV-05 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-05 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-06 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-06 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-07 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-08 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-10 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-10 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-11 ping 10001
+  fault detection FN: INTERVAL_WARNING driver DRV-02 ping 143
+  fault detection FN: INTERVAL_WARNING driver DRV-02 ping 70
+  fault detection FN: INTERVAL_WARNING driver DRV-03 ping 176
+  fault detection FN: INTERVAL_WARNING driver DRV-04 ping 145
+  fault detection FN: INTERVAL_WARNING driver DRV-05 ping 110
+  fault detection FN: INTERVAL_WARNING driver DRV-08 ping 140
+  fault detection FN: INTERVAL_WARNING driver DRV-09 ping 163
+  fault detection FN: INTERVAL_WARNING driver DRV-09 ping 50
+  fault detection FN: LATE_ARRIVAL driver DRV-01 ping 105
+  fault detection FN: LATE_ARRIVAL driver DRV-01 ping 172
+  fault detection FN: LATE_ARRIVAL driver DRV-01 ping 48
+  fault detection FN: LATE_ARRIVAL driver DRV-02 ping 119
+  fault detection FN: LATE_ARRIVAL driver DRV-03 ping 110
+  fault detection FN: LATE_ARRIVAL driver DRV-03 ping 54
+  fault detection FN: LATE_ARRIVAL driver DRV-08 ping 60
+  fault detection FN: LATE_ARRIVAL driver DRV-08 ping 79
+  fault detection FN: LATE_ARRIVAL driver DRV-09 ping 175
+  fault detection FN: LATE_ARRIVAL driver DRV-10 ping 194

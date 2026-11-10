@@ -1,0 +1,255 @@
+
+=== 1. generate data (seed 42)
+$ .venv/bin/python generate_data.py --seed 42
+pings.csv: 2525 rows, 12 drivers; ground_truth.csv: 15 driver-days, 54 faults
+pings_clean.csv: 2520 rows, 12 drivers; ground_truth_clean.csv: 15 driver-days, 0 faults
+fixtures: 20 files in fixtures
+--- exit 0 (as expected)
+
+=== 2a. fixed.py on F_BOUNDARY
+$ .venv/bin/python fixed.py --pings fixtures/F_BOUNDARY.csv --out out/F_BOUNDARY
+fixed: 1 driver-day rows, 0 events -> out/F_BOUNDARY
+--- exit 0 (as expected)
+
+=== 2b. GATE: qa_check vs hand calculation (F_BOUNDARY)
+$ .venv/bin/python qa_check.py --pings fixtures/F_BOUNDARY.csv --ground-truth fixtures/F_BOUNDARY_ground_truth.csv --report out/F_BOUNDARY/daily_km.csv --out results/qa_F_BOUNDARY
+QA CHECK (SYNTHETIC data)
+pings: fixtures/F_BOUNDARY.csv (8 rows)   report: out/F_BOUNDARY/daily_km.csv
+daily rows compared: 1   tolerance: 0.001 km   failed: 0
+interval summary (violations = gaps + short intervals):
+  DRV-A    pings     8  regular     7  gaps   0  short   0
+interval violations: 0
+RESULT: PASS (0 failure(s))
+--- exit 0 (as expected)
+
+=== 3a. fixed.py on data/pings.csv
+$ .venv/bin/python fixed.py --pings data/pings.csv --out out/fixed
+fixed: 15 driver-day rows, 62 events -> out/fixed
+--- exit 0 (as expected)
+
+=== 3b. fixed.py on data/pings_clean.csv
+$ .venv/bin/python fixed.py --pings data/pings_clean.csv --out out/fixed_clean
+fixed: 15 driver-day rows, 0 events -> out/fixed_clean
+--- exit 0 (as expected)
+
+=== 3c. old_reference.py on data/pings.csv
+$ .venv/bin/python old_reference.py --pings data/pings.csv --out out/old
+old (17 bugs on): 14 driver-day rows -> out/old
+--- exit 0 (as expected)
+
+=== 4a. qa_check: fixed, faulty dataset (expect PASS)
+$ .venv/bin/python qa_check.py --pings data/pings.csv --ground-truth data/ground_truth.csv --report out/fixed/daily_km.csv --events out/fixed/events.csv --out results/qa_fixed
+QA CHECK (SYNTHETIC data)
+pings: data/pings.csv (2525 rows)   report: out/fixed/daily_km.csv
+daily rows compared: 15   tolerance: 0.001 km   failed: 0
+fault detection: injected 54, TP 62, FP 0, FN 0, precision 1.000, recall 1.000
+  DROPPED_OFFROAD      TP  10  FP   0  FN   0
+  DROPPED_SPEED        TP   8  FP   0  FN   0
+  DUPLICATE_CONFLICT   TP   8  FP   0  FN   0
+  DUPLICATE_DROPPED    TP  18  FP   0  FN   0
+  INTERVAL_WARNING     TP   8  FP   0  FN   0
+  LATE_ARRIVAL         TP  10  FP   0  FN   0
+interval summary (violations = gaps + short intervals):
+  DRV-01   pings   230  regular   229  gaps   0  short   0
+  DRV-02   pings   196  regular   193  gaps   2  short   0
+  DRV-03   pings   215  regular   213  gaps   1  short   0
+  DRV-04   pings   227  regular   225  gaps   1  short   0
+  DRV-05   pings   216  regular   214  gaps   1  short   0
+  DRV-06   pings   217  regular   216  gaps   0  short   0
+  DRV-07   pings   195  regular   194  gaps   0  short   0
+  DRV-08   pings   204  regular   202  gaps   1  short   0
+  DRV-09   pings   191  regular   188  gaps   2  short   0
+  DRV-10   pings   202  regular   201  gaps   0  short   0
+  DRV-11   pings   195  regular   194  gaps   0  short   0
+  DRV-12   pings   219  regular   218  gaps   0  short   0
+interval violations: 8
+  GAP driver DRV-02 ping 70: 20 s
+  GAP driver DRV-02 ping 143: 20 s
+  GAP driver DRV-03 ping 176: 30 s
+  GAP driver DRV-04 ping 145: 20 s
+  GAP driver DRV-05 ping 110: 30 s
+  GAP driver DRV-08 ping 140: 30 s
+  GAP driver DRV-09 ping 50: 30 s
+  GAP driver DRV-09 ping 163: 30 s
+RESULT: PASS (0 failure(s))
+--- exit 0 (as expected)
+
+=== 4b. qa_check: fixed, clean dataset (expect PASS)
+$ .venv/bin/python qa_check.py --pings data/pings_clean.csv --ground-truth data/ground_truth_clean.csv --report out/fixed_clean/daily_km.csv --events out/fixed_clean/events.csv --out results/qa_fixed_clean
+QA CHECK (SYNTHETIC data)
+pings: data/pings_clean.csv (2520 rows)   report: out/fixed_clean/daily_km.csv
+daily rows compared: 15   tolerance: 0.001 km   failed: 0
+fault detection: injected 0, TP 0, FP 0, FN 0, precision 1.000, recall 1.000
+  DROPPED_OFFROAD      TP   0  FP   0  FN   0
+  DROPPED_SPEED        TP   0  FP   0  FN   0
+  DUPLICATE_CONFLICT   TP   0  FP   0  FN   0
+  DUPLICATE_DROPPED    TP   0  FP   0  FN   0
+  INTERVAL_WARNING     TP   0  FP   0  FN   0
+  LATE_ARRIVAL         TP   0  FP   0  FN   0
+interval summary (violations = gaps + short intervals):
+  DRV-01   pings   230  regular   229  gaps   0  short   0
+  DRV-02   pings   198  regular   197  gaps   0  short   0
+  DRV-03   pings   217  regular   216  gaps   0  short   0
+  DRV-04   pings   228  regular   227  gaps   0  short   0
+  DRV-05   pings   218  regular   217  gaps   0  short   0
+  DRV-06   pings   217  regular   216  gaps   0  short   0
+  DRV-07   pings   195  regular   194  gaps   0  short   0
+  DRV-08   pings   206  regular   205  gaps   0  short   0
+  DRV-09   pings   195  regular   194  gaps   0  short   0
+  DRV-10   pings   202  regular   201  gaps   0  short   0
+  DRV-11   pings   195  regular   194  gaps   0  short   0
+  DRV-12   pings   219  regular   218  gaps   0  short   0
+interval violations: 0
+RESULT: PASS (0 failure(s))
+--- exit 0 (as expected)
+
+=== 4c. qa_check: old, faulty dataset (expect FAIL, exit 1)
+$ .venv/bin/python qa_check.py --pings data/pings.csv --ground-truth data/ground_truth.csv --report out/old/daily_km.csv --events out/old/events.csv --out results/qa_old
+QA CHECK (SYNTHETIC data)
+pings: data/pings.csv (2525 rows)   report: out/old/daily_km.csv
+daily rows compared: 17   tolerance: 0.001 km   failed: 17
+fault detection: injected 54, TP 18, FP 13, FN 44, precision 0.581, recall 0.290
+  DROPPED_OFFROAD      TP  10  FP   0  FN   0
+  DROPPED_SPEED        TP   8  FP  13  FN   0
+  DUPLICATE_CONFLICT   TP   0  FP   0  FN   8
+  DUPLICATE_DROPPED    TP   0  FP   0  FN  18
+  INTERVAL_WARNING     TP   0  FP   0  FN   8
+  LATE_ARRIVAL         TP   0  FP   0  FN  10
+interval summary (violations = gaps + short intervals):
+  DRV-01   pings   230  regular   229  gaps   0  short   0
+  DRV-02   pings   196  regular   193  gaps   2  short   0
+  DRV-03   pings   215  regular   213  gaps   1  short   0
+  DRV-04   pings   227  regular   225  gaps   1  short   0
+  DRV-05   pings   216  regular   214  gaps   1  short   0
+  DRV-06   pings   217  regular   216  gaps   0  short   0
+  DRV-07   pings   195  regular   194  gaps   0  short   0
+  DRV-08   pings   204  regular   202  gaps   1  short   0
+  DRV-09   pings   191  regular   188  gaps   2  short   0
+  DRV-10   pings   202  regular   201  gaps   0  short   0
+  DRV-11   pings   195  regular   194  gaps   0  short   0
+  DRV-12   pings   219  regular   218  gaps   0  short   0
+interval violations: 8
+  GAP driver DRV-02 ping 70: 20 s
+  GAP driver DRV-02 ping 143: 20 s
+  GAP driver DRV-03 ping 176: 30 s
+  GAP driver DRV-04 ping 145: 20 s
+  GAP driver DRV-05 ping 110: 30 s
+  GAP driver DRV-08 ping 140: 30 s
+  GAP driver DRV-09 ping 50: 30 s
+  GAP driver DRV-09 ping 163: 30 s
+RESULT: FAIL (74 failure(s))
+  daily km DRV-01 2026-11-07: expected 2.742678, got 4.202117 (diff +1.459439)
+  daily km DRV-02 2026-11-07: expected 5.383819, got 5.884637 (diff +0.500818)
+  daily km DRV-03 2026-11-07: expected 1.144128, got 2.801773 (diff +1.657645)
+  daily km DRV-03 2026-11-08: expected 1.161358, got 0.000000 (diff -1.161358)
+  daily km DRV-04 2026-11-07: expected 0.000000, got 0.935410 (diff +0.935410)
+  daily km DRV-04 2026-11-08: expected 2.312939, got 1.823550 (diff -0.489389)
+  daily km DRV-05 2026-11-08: expected 5.286504, got 5.198628 (diff -0.087876)
+  daily km DRV-06 2026-11-08: expected 3.832871, got 4.514021 (diff +0.681150)
+  daily km DRV-07 2026-11-08: expected 1.088569, got 4.909955 (diff +3.821386)
+  daily km DRV-07 2026-11-09: expected 3.045302, got 0.000000 (diff -3.045302)
+  daily km DRV-08 2026-11-08: expected 5.978349, got 6.149621 (diff +0.171272)
+  daily km DRV-09 2026-11-09: expected 4.571235, got 4.247206 (diff -0.324029)
+  daily km DRV-10 2026-11-09: expected 2.274967, got 6.096493 (diff +3.821526)
+  daily km DRV-10 2026-11-10: expected 3.249215, got 0.000000 (diff -3.249215)
+  daily km DRV-11 2026-11-09: expected 0.000000, got 1.741887 (diff +1.741887)
+  daily km DRV-11 2026-11-10: expected 6.047244, got 4.654574 (diff -1.392670)
+  daily km DRV-12 2026-11-07: expected 5.683115, got 5.712324 (diff +0.029209)
+  fault detection FP: DROPPED_SPEED driver DRV-01 ping 189
+  fault detection FP: DROPPED_SPEED driver DRV-02 ping 80
+  fault detection FP: DROPPED_SPEED driver DRV-03 ping 100
+  fault detection FP: DROPPED_SPEED driver DRV-05 ping 10001
+  fault detection FP: DROPPED_SPEED driver DRV-06 ping 83
+  fault detection FP: DROPPED_SPEED driver DRV-08 ping 60
+  fault detection FP: DROPPED_SPEED driver DRV-08 ping 65
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 175
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 180
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 32
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 73
+  fault detection FP: DROPPED_SPEED driver DRV-10 ping 25
+  fault detection FP: DROPPED_SPEED driver DRV-10 ping 87
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-01 ping 109
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-02 ping 174
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-03 ping 114
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-04 ping 54
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-05 ping 124
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-06 ping 114
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-08 ping 192
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-11 ping 173
+  fault detection FN: DUPLICATE_DROPPED driver DRV-01 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-02 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-02 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-02 ping 10003
+  fault detection FN: DUPLICATE_DROPPED driver DRV-03 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-03 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-04 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-04 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-04 ping 10003
+  fault detection FN: DUPLICATE_DROPPED driver DRV-05 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-05 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-06 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-06 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-07 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-08 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-10 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-10 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-11 ping 10001
+  fault detection FN: INTERVAL_WARNING driver DRV-02 ping 143
+  fault detection FN: INTERVAL_WARNING driver DRV-02 ping 70
+  fault detection FN: INTERVAL_WARNING driver DRV-03 ping 176
+  fault detection FN: INTERVAL_WARNING driver DRV-04 ping 145
+  fault detection FN: INTERVAL_WARNING driver DRV-05 ping 110
+  fault detection FN: INTERVAL_WARNING driver DRV-08 ping 140
+  fault detection FN: INTERVAL_WARNING driver DRV-09 ping 163
+  fault detection FN: INTERVAL_WARNING driver DRV-09 ping 50
+  fault detection FN: LATE_ARRIVAL driver DRV-01 ping 105
+  fault detection FN: LATE_ARRIVAL driver DRV-01 ping 172
+  fault detection FN: LATE_ARRIVAL driver DRV-01 ping 48
+  fault detection FN: LATE_ARRIVAL driver DRV-02 ping 119
+  fault detection FN: LATE_ARRIVAL driver DRV-03 ping 110
+  fault detection FN: LATE_ARRIVAL driver DRV-03 ping 54
+  fault detection FN: LATE_ARRIVAL driver DRV-08 ping 60
+  fault detection FN: LATE_ARRIVAL driver DRV-08 ping 79
+  fault detection FN: LATE_ARRIVAL driver DRV-09 ping 175
+  fault detection FN: LATE_ARRIVAL driver DRV-10 ping 194
+--- exit 1 (as expected)
+
+=== 5a. regression summary
+$ .venv/bin/python regression_summary.py
+# Regression summary (generated by regression_summary.py from an actual run; SYNTHETIC data)
+
+- Bugs caught by their own regression test with only that bug switched on: **17/17**
+- Regression checks failing on old_reference.py (all bugs on): **18/18**
+- Regression checks passing on fixed.py: **18/18**
+- Regression checks passing on old_reference.py with every bug off (baseline): **18/18**
+
+--- exit 0 (as expected)
+
+=== 5b. before / after
+$ .venv/bin/python before_after.py
+before_after: 17 driver-day rows -> results/before_after.csv
+  totals: ground truth 53.802293 km, fixed 53.802293 km, old 58.872196 km
+  rows where old differs from fixed: 17; rows where fixed differs from ground truth (> 0.001 km): 0
+--- exit 0 (as expected)
+
+=== 6. pytest
+$ .venv/bin/python -m pytest tests -q --results-csv results/test_results.csv
+........................................................................ [ 64%]
+.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x...                                  [100%]
+93 passed, 18 xfailed in 732.49s (0:12:12)
+--- exit 0 (as expected)
+
+=== SUMMARY
+  OK   exit 0  1. generate data (seed 42)
+  OK   exit 0  2a. fixed.py on F_BOUNDARY
+  OK   exit 0  2b. GATE: qa_check vs hand calculation (F_BOUNDARY)
+  OK   exit 0  3a. fixed.py on data/pings.csv
+  OK   exit 0  3b. fixed.py on data/pings_clean.csv
+  OK   exit 0  3c. old_reference.py on data/pings.csv
+  OK   exit 0  4a. qa_check: fixed, faulty dataset (expect PASS)
+  OK   exit 0  4b. qa_check: fixed, clean dataset (expect PASS)
+  OK   exit 1  4c. qa_check: old, faulty dataset (expect FAIL, exit 1)
+  OK   exit 0  5a. regression summary
+  OK   exit 0  5b. before / after
+  OK   exit 0  6. pytest
+exit=0

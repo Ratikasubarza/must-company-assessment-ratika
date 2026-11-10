@@ -68,7 +68,7 @@ def main(argv=None):
     os.makedirs(os.path.dirname(args.out), exist_ok=True)
     df.to_csv(args.out, index=False)
     tot = df[["ground_truth_km", "fixed_km", "old_km"]].sum()
-    print(f"before_after: {len(df)} driver-day rows -> {args.out}")
+    print(f"before_after: {len(df)} driver-day rows -> {os.path.relpath(args.out, HERE)}")
     print(f"  totals: ground truth {tot.ground_truth_km:.6f} km, fixed {tot.fixed_km:.6f} km, old {tot.old_km:.6f} km")
     print(f"  rows where old differs from fixed: {(df.old_minus_fixed_km.abs() > EPS).sum()}; "
           f"rows where fixed differs from ground truth (> 0.001 km): {(df.fixed_minus_ground_truth_km.abs() > 0.001).sum()}")

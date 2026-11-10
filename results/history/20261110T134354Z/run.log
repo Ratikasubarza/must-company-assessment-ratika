@@ -1,0 +1,363 @@
+
+=== 1. generate data (seed 42)
+$ .venv/bin/python generate_data.py --seed 42
+pings.csv: 2525 rows, 12 drivers; ground_truth.csv: 15 driver-days, 54 faults
+pings_clean.csv: 2520 rows, 12 drivers; ground_truth_clean.csv: 15 driver-days, 0 faults
+fixtures: 21 files in fixtures
+--- exit 0 (as expected)
+
+=== 2a. fixed.py on F_BOUNDARY
+$ .venv/bin/python fixed.py --pings fixtures/F_BOUNDARY.csv --out out/F_BOUNDARY
+fixed: 1 driver-day rows, 0 events -> out/F_BOUNDARY
+--- exit 0 (as expected)
+
+=== 2b. GATE: qa_check vs hand calculation (F_BOUNDARY)
+$ .venv/bin/python qa_check.py --pings fixtures/F_BOUNDARY.csv --ground-truth fixtures/F_BOUNDARY_ground_truth.csv --report out/F_BOUNDARY/daily_km.csv --out results/qa_F_BOUNDARY
+QA CHECK (SYNTHETIC data)
+pings: fixtures/F_BOUNDARY.csv (8 rows)   report: out/F_BOUNDARY/daily_km.csv
+daily rows compared: 1   tolerance: 0.001 km   failed: 0
+interval summary (violations = gaps + short intervals):
+  DRV-A    pings     8  regular     7  gaps   0  short   0
+interval violations: 0
+RESULT: PASS (0 failure(s))
+--- exit 0 (as expected)
+
+=== 3a. fixed.py on data/pings.csv
+$ .venv/bin/python fixed.py --pings data/pings.csv --out out/fixed
+fixed: 15 driver-day rows, 62 events -> out/fixed
+--- exit 0 (as expected)
+
+=== 3b. fixed.py on data/pings_clean.csv
+$ .venv/bin/python fixed.py --pings data/pings_clean.csv --out out/fixed_clean
+fixed: 15 driver-day rows, 0 events -> out/fixed_clean
+--- exit 0 (as expected)
+
+=== 3c. old_reference.py on data/pings.csv
+$ .venv/bin/python old_reference.py --pings data/pings.csv --out out/old
+old (17 bugs on): 14 driver-day rows -> out/old
+--- exit 0 (as expected)
+
+=== 4a. qa_check: fixed, faulty dataset (expect PASS)
+$ .venv/bin/python qa_check.py --pings data/pings.csv --ground-truth data/ground_truth.csv --report out/fixed/daily_km.csv --events out/fixed/events.csv --out results/qa_fixed
+QA CHECK (SYNTHETIC data)
+pings: data/pings.csv (2525 rows)   report: out/fixed/daily_km.csv
+daily rows compared: 15   tolerance: 0.001 km   failed: 0
+fault detection: injected 54, TP 62, FP 0, FN 0, precision 1.000, recall 1.000
+  DROPPED_OFFROAD      TP  10  FP   0  FN   0
+  DROPPED_SPEED        TP   8  FP   0  FN   0
+  DUPLICATE_CONFLICT   TP   8  FP   0  FN   0
+  DUPLICATE_DROPPED    TP  18  FP   0  FN   0
+  INTERVAL_WARNING     TP   8  FP   0  FN   0
+  LATE_ARRIVAL         TP  10  FP   0  FN   0
+interval summary (violations = gaps + short intervals):
+  DRV-01   pings   230  regular   229  gaps   0  short   0
+  DRV-02   pings   196  regular   193  gaps   2  short   0
+  DRV-03   pings   215  regular   213  gaps   1  short   0
+  DRV-04   pings   227  regular   225  gaps   1  short   0
+  DRV-05   pings   216  regular   214  gaps   1  short   0
+  DRV-06   pings   217  regular   216  gaps   0  short   0
+  DRV-07   pings   195  regular   194  gaps   0  short   0
+  DRV-08   pings   204  regular   202  gaps   1  short   0
+  DRV-09   pings   191  regular   188  gaps   2  short   0
+  DRV-10   pings   202  regular   201  gaps   0  short   0
+  DRV-11   pings   195  regular   194  gaps   0  short   0
+  DRV-12   pings   219  regular   218  gaps   0  short   0
+interval violations: 8
+  GAP driver DRV-02 ping 70: 20 s
+  GAP driver DRV-02 ping 143: 20 s
+  GAP driver DRV-03 ping 176: 30 s
+  GAP driver DRV-04 ping 145: 20 s
+  GAP driver DRV-05 ping 110: 30 s
+  GAP driver DRV-08 ping 140: 30 s
+  GAP driver DRV-09 ping 50: 30 s
+  GAP driver DRV-09 ping 163: 30 s
+RESULT: PASS (0 failure(s))
+--- exit 0 (as expected)
+
+=== 4b. qa_check: fixed, clean dataset (expect PASS)
+$ .venv/bin/python qa_check.py --pings data/pings_clean.csv --ground-truth data/ground_truth_clean.csv --report out/fixed_clean/daily_km.csv --events out/fixed_clean/events.csv --out results/qa_fixed_clean
+QA CHECK (SYNTHETIC data)
+pings: data/pings_clean.csv (2520 rows)   report: out/fixed_clean/daily_km.csv
+daily rows compared: 15   tolerance: 0.001 km   failed: 0
+fault detection: injected 0, TP 0, FP 0, FN 0, precision 1.000, recall 1.000
+  DROPPED_OFFROAD      TP   0  FP   0  FN   0
+  DROPPED_SPEED        TP   0  FP   0  FN   0
+  DUPLICATE_CONFLICT   TP   0  FP   0  FN   0
+  DUPLICATE_DROPPED    TP   0  FP   0  FN   0
+  INTERVAL_WARNING     TP   0  FP   0  FN   0
+  LATE_ARRIVAL         TP   0  FP   0  FN   0
+interval summary (violations = gaps + short intervals):
+  DRV-01   pings   230  regular   229  gaps   0  short   0
+  DRV-02   pings   198  regular   197  gaps   0  short   0
+  DRV-03   pings   217  regular   216  gaps   0  short   0
+  DRV-04   pings   228  regular   227  gaps   0  short   0
+  DRV-05   pings   218  regular   217  gaps   0  short   0
+  DRV-06   pings   217  regular   216  gaps   0  short   0
+  DRV-07   pings   195  regular   194  gaps   0  short   0
+  DRV-08   pings   206  regular   205  gaps   0  short   0
+  DRV-09   pings   195  regular   194  gaps   0  short   0
+  DRV-10   pings   202  regular   201  gaps   0  short   0
+  DRV-11   pings   195  regular   194  gaps   0  short   0
+  DRV-12   pings   219  regular   218  gaps   0  short   0
+interval violations: 0
+RESULT: PASS (0 failure(s))
+--- exit 0 (as expected)
+
+=== 4c. qa_check: old, faulty dataset (expect FAIL, exit 1)
+$ .venv/bin/python qa_check.py --pings data/pings.csv --ground-truth data/ground_truth.csv --report out/old/daily_km.csv --events out/old/events.csv --out results/qa_old --note old_reference.py is EXPECTED to FAIL this check: it contains the 17 planted bugs in BUGS.md, and this report shows the checker catching them. It is not a defect in fixed.py or qa_check.py.
+NOTE: old_reference.py is EXPECTED to FAIL this check: it contains the 17 planted bugs in BUGS.md, and this report shows the checker catching them. It is not a defect in fixed.py or qa_check.py.
+QA CHECK (SYNTHETIC data)
+pings: data/pings.csv (2525 rows)   report: out/old/daily_km.csv
+daily rows compared: 17   tolerance: 0.001 km   failed: 17
+fault detection: injected 54, TP 18, FP 13, FN 44, precision 0.581, recall 0.290
+  DROPPED_OFFROAD      TP  10  FP   0  FN   0
+  DROPPED_SPEED        TP   8  FP  13  FN   0
+  DUPLICATE_CONFLICT   TP   0  FP   0  FN   8
+  DUPLICATE_DROPPED    TP   0  FP   0  FN  18
+  INTERVAL_WARNING     TP   0  FP   0  FN   8
+  LATE_ARRIVAL         TP   0  FP   0  FN  10
+interval summary (violations = gaps + short intervals):
+  DRV-01   pings   230  regular   229  gaps   0  short   0
+  DRV-02   pings   196  regular   193  gaps   2  short   0
+  DRV-03   pings   215  regular   213  gaps   1  short   0
+  DRV-04   pings   227  regular   225  gaps   1  short   0
+  DRV-05   pings   216  regular   214  gaps   1  short   0
+  DRV-06   pings   217  regular   216  gaps   0  short   0
+  DRV-07   pings   195  regular   194  gaps   0  short   0
+  DRV-08   pings   204  regular   202  gaps   1  short   0
+  DRV-09   pings   191  regular   188  gaps   2  short   0
+  DRV-10   pings   202  regular   201  gaps   0  short   0
+  DRV-11   pings   195  regular   194  gaps   0  short   0
+  DRV-12   pings   219  regular   218  gaps   0  short   0
+interval violations: 8
+  GAP driver DRV-02 ping 70: 20 s
+  GAP driver DRV-02 ping 143: 20 s
+  GAP driver DRV-03 ping 176: 30 s
+  GAP driver DRV-04 ping 145: 20 s
+  GAP driver DRV-05 ping 110: 30 s
+  GAP driver DRV-08 ping 140: 30 s
+  GAP driver DRV-09 ping 50: 30 s
+  GAP driver DRV-09 ping 163: 30 s
+RESULT: FAIL (74 failure(s))
+  daily km DRV-01 2026-11-07: expected 2.742678, got 4.202117 (diff +1.459439)
+  daily km DRV-02 2026-11-07: expected 5.383819, got 5.884637 (diff +0.500818)
+  daily km DRV-03 2026-11-07: expected 1.144128, got 2.801773 (diff +1.657645)
+  daily km DRV-03 2026-11-08: expected 1.161358, got 0.000000 (diff -1.161358)
+  daily km DRV-04 2026-11-07: expected 0.000000, got 0.935410 (diff +0.935410)
+  daily km DRV-04 2026-11-08: expected 2.312939, got 1.823550 (diff -0.489389)
+  daily km DRV-05 2026-11-08: expected 5.286504, got 5.198628 (diff -0.087876)
+  daily km DRV-06 2026-11-08: expected 3.832871, got 4.514021 (diff +0.681150)
+  daily km DRV-07 2026-11-08: expected 1.088569, got 4.909955 (diff +3.821386)
+  daily km DRV-07 2026-11-09: expected 3.045302, got 0.000000 (diff -3.045302)
+  daily km DRV-08 2026-11-08: expected 5.978349, got 6.149621 (diff +0.171272)
+  daily km DRV-09 2026-11-09: expected 4.571235, got 4.247206 (diff -0.324029)
+  daily km DRV-10 2026-11-09: expected 2.274967, got 6.096493 (diff +3.821526)
+  daily km DRV-10 2026-11-10: expected 3.249215, got 0.000000 (diff -3.249215)
+  daily km DRV-11 2026-11-09: expected 0.000000, got 1.741887 (diff +1.741887)
+  daily km DRV-11 2026-11-10: expected 6.047244, got 4.654574 (diff -1.392670)
+  daily km DRV-12 2026-11-07: expected 5.683115, got 5.712324 (diff +0.029209)
+  fault detection FP: DROPPED_SPEED driver DRV-01 ping 189
+  fault detection FP: DROPPED_SPEED driver DRV-02 ping 80
+  fault detection FP: DROPPED_SPEED driver DRV-03 ping 100
+  fault detection FP: DROPPED_SPEED driver DRV-05 ping 10001
+  fault detection FP: DROPPED_SPEED driver DRV-06 ping 83
+  fault detection FP: DROPPED_SPEED driver DRV-08 ping 60
+  fault detection FP: DROPPED_SPEED driver DRV-08 ping 65
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 175
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 180
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 32
+  fault detection FP: DROPPED_SPEED driver DRV-09 ping 73
+  fault detection FP: DROPPED_SPEED driver DRV-10 ping 25
+  fault detection FP: DROPPED_SPEED driver DRV-10 ping 87
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-01 ping 109
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-02 ping 174
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-03 ping 114
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-04 ping 54
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-05 ping 124
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-06 ping 114
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-08 ping 192
+  fault detection FN: DUPLICATE_CONFLICT driver DRV-11 ping 173
+  fault detection FN: DUPLICATE_DROPPED driver DRV-01 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-02 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-02 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-02 ping 10003
+  fault detection FN: DUPLICATE_DROPPED driver DRV-03 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-03 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-04 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-04 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-04 ping 10003
+  fault detection FN: DUPLICATE_DROPPED driver DRV-05 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-05 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-06 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-06 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-07 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-08 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-10 ping 10001
+  fault detection FN: DUPLICATE_DROPPED driver DRV-10 ping 10002
+  fault detection FN: DUPLICATE_DROPPED driver DRV-11 ping 10001
+  fault detection FN: INTERVAL_WARNING driver DRV-02 ping 143
+  fault detection FN: INTERVAL_WARNING driver DRV-02 ping 70
+  fault detection FN: INTERVAL_WARNING driver DRV-03 ping 176
+  fault detection FN: INTERVAL_WARNING driver DRV-04 ping 145
+  fault detection FN: INTERVAL_WARNING driver DRV-05 ping 110
+  fault detection FN: INTERVAL_WARNING driver DRV-08 ping 140
+  fault detection FN: INTERVAL_WARNING driver DRV-09 ping 163
+  fault detection FN: INTERVAL_WARNING driver DRV-09 ping 50
+  fault detection FN: LATE_ARRIVAL driver DRV-01 ping 105
+  fault detection FN: LATE_ARRIVAL driver DRV-01 ping 172
+  fault detection FN: LATE_ARRIVAL driver DRV-01 ping 48
+  fault detection FN: LATE_ARRIVAL driver DRV-02 ping 119
+  fault detection FN: LATE_ARRIVAL driver DRV-03 ping 110
+  fault detection FN: LATE_ARRIVAL driver DRV-03 ping 54
+  fault detection FN: LATE_ARRIVAL driver DRV-08 ping 60
+  fault detection FN: LATE_ARRIVAL driver DRV-08 ping 79
+  fault detection FN: LATE_ARRIVAL driver DRV-09 ping 175
+  fault detection FN: LATE_ARRIVAL driver DRV-10 ping 194
+--- exit 1 (as expected)
+
+=== 5a. regression summary
+$ .venv/bin/python regression_summary.py
+# Regression summary (generated by regression_summary.py from an actual run; SYNTHETIC data)
+
+- Bugs caught by their own regression test with only that bug switched on: **17/17**
+- Regression checks failing on old_reference.py (all bugs on): **18/18**
+- Regression checks passing on fixed.py: **18/18**
+- Regression checks passing on old_reference.py with every bug off (baseline): **18/18**
+
+- Regression guards passing on fixed.py: 14/14
+--- exit 0 (as expected)
+
+=== 5b. before / after
+$ .venv/bin/python before_after.py
+before_after: 17 driver-day rows -> results/before_after.csv
+  totals: ground truth 53.802293 km, fixed 53.802293 km, old 58.872196 km
+  rows where old differs from fixed: 17; rows where fixed differs from ground truth (> 0.001 km): 0
+--- exit 0 (as expected)
+
+=== 5c. problem impact per bug group + day-cut before/after
+$ .venv/bin/python tools/problem_impact.py
+baseline check: old_reference with no bugs == fixed.py daily km: True
+day_cut        change -0.087300 km (-0.16%), off >1 m: 10/17 (union), over 9.997299, under 10.084599, gross 20.081898, worst DRV-10 2026-11-10 -3.249215
+noise          change +2.269227 km (+4.22%), off >1 m: 5/15 (union), over 2.269227, under 0.000000, gross 2.269227, worst DRV-07 2026-11-09 +0.710600
+late_pings     change +1.325634 km (+2.46%), off >1 m: 2/15 (union), over 1.325634, under 0.000000, gross 1.325634, worst DRV-01 2026-11-07 +0.964148
+zone_boundary  change -0.395253 km (-0.73%), off >1 m: 14/15 (union), over 0.256260, under 0.651513, gross 0.907773, worst DRV-09 2026-11-09 -0.328781
+duplicates     change +0.070231 km (+0.13%), off >1 m: 1/15 (union), over 0.070231, under 0.000000, gross 0.070231, worst DRV-03 2026-11-07 +0.070231
+earth_radius   change +0.060271 km (+0.11%), off >1 m: 15/15 (union), over 0.060271, under 0.000000, gross 0.060271, worst DRV-11 2026-11-10 +0.006774
+no_z_input     change +0.000000 km (+0.00%), off >1 m: 0/15 (union), over 0.000000, under 0.000000, gross 0.000000, worst none +0.000000
+all_bugs       change +5.069904 km (+9.42%), off >1 m: 17/17 (union), over 14.819743, under 9.749839, gross 24.569582, worst DRV-10 2026-11-09 +3.821527
+no_z_input on fixtures/F_INVALID_no_z.csv: exit 0 with BUG-16 on, exit 2 with no bugs
+day-cut fix (old all bugs -> old without BUG-14/15): total 58.872196 -> 58.959594 km; driver-days changed >1 m: 10/17 (union)
+wrote results/problem_impact.csv, results/problem_examples.csv, results/daycut_before_after.csv
+--- exit 0 (as expected)
+
+=== 5d. limitations (what fixed.py does not handle)
+$ .venv/bin/python tools/limitations.py
+L01 Parked GPS jitter is counted as distance: 1.655136 km (true distance 0 km)
+L02 Zig-zag inside the 100 m corridor is counted in full: 1.650486 km (along-road distance 0.400302 km (+312.3%))
+L03 A 3-hour gap is bridged as one straight segment: 0.43423 km (shortest along-road route 0.611572 km; real route in 3 h unknown)
+L04 A spike on the first ping becomes the speed anchor: 0.817166 km (0.400302 km without the spike)
+L05 A duplicate whose first copy is noise loses the good copy: 0.189822 km (0.22239 km if the good copy were kept)
+L06 A segment crossing local midnight goes wholly to the start day: 0.022239 km (time-proportional share driven after midnight but booked on the previous day (A8))
+L07 A (0,0) 'null island' ping lies on R1 and is never off-road: 0.0 m off road (any real GPS null fix would be kept if speed allows)
+L08 All geometry and tests sit at latitude 0: 0.0 km difference (fixed.py vs independent calculation at lat 60)
+L09 One bad row rejects the whole file: 53.802292 km withheld (2525 rows and 12 drivers held back by 1 row (A17))
+L10 Late pings after the daily cut change a day already reported: 0.031366 km (no restatement or versioning of a published day)
+L11 qa_check can only judge km against generator ground truth: 1 exit code (on real data there is no ground truth, so km cannot be verified this way)
+wrote results/limitations.csv (11 rows)
+--- exit 0 (as expected)
+
+=== 6. pytest
+$ .venv/bin/python -m pytest tests -q --results-csv results/test_results.csv
+.......F.....................................x.......................... [ 48%]
+...........x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.x.X.X.X.x.X.x.x.x.x.x [ 96%]
+.X...                                                                    [100%]
+=================================== FAILURES ===================================
+________________ test_TC_56_fresh_copy_runs_from_readme_command ________________
+
+record = <function record.<locals>._record at 0x10b4089a0>
+tmp_path = PosixPath('<tmp>/pytest-of-<user>/pytest-20/test_TC_56_fresh_copy_runs_fro0')
+
+    def test_TC_56_fresh_copy_runs_from_readme_command(record, tmp_path):
+        """Given a fresh copy of ONLY the files git tracks (`git ls-files`; untracked files are not copied),
+        When the README command `python run_all.py --no-tests` runs in it twice,
+        Then each run exits 0 and writes results/before_after.csv and results/qa_fixed/qa_summary.txt, and the
+        run history keeps BOTH runs: results/history/runs.csv has 2 rows with different run_ids, both overall OK,
+        each with its own history folder (qa_fixed/qa_summary.txt and run.log), and results/RUN_ID names the 2nd run.
+        Needs a commit first: until fixed.py, run_all.py and the rest are committed, the copy is incomplete
+        and this test fails."""
+        files = subprocess.run(["git", "ls-files"], cwd=ROOT,
+                               capture_output=True, text=True, check=True).stdout.split("\n")
+        dst = tmp_path / "clone"
+        for f in filter(None, files):
+            src = os.path.join(ROOT, f)
+            if os.path.isfile(src) and not f.startswith("results/"):
+                os.makedirs(dst / os.path.dirname(f), exist_ok=True)
+                shutil.copy2(src, dst / f)
+        runs = [subprocess.run([sys.executable, "run_all.py", "--no-tests"], cwd=dst, capture_output=True, text=True)
+                for _ in range(2)]
+        res = dst / "results"
+        hist = list(csv.DictReader(open(res / "history" / "runs.csv"))) if (res / "history" / "runs.csv").exists() else []
+        ids = [h["run_id"] for h in hist]
+        folders_ok = all((res / "history" / i / "qa_fixed" / "qa_summary.txt").exists()
+                         and (res / "history" / i / "run.log").exists() for i in ids)
+        last_id = (res / "RUN_ID").read_text().strip() if (res / "RUN_ID").exists() else ""
+        act = ([p.returncode for p in runs], (res / "before_after.csv").exists(), (res / "qa_fixed" / "qa_summary.txt").exists(),
+               len(hist), len(set(ids)), [h["overall"] for h in hist], folders_ok, bool(ids) and last_id == ids[-1])
+        exp = ([0, 0], True, True, 2, 2, ["OK", "OK"], True, True)
+        record("TC-56", IMPL, exp, act)
+>       assert act == exp, runs[-1].stdout[-2000:] + runs[-1].stderr[-2000:]
+E       AssertionError: > 0.001 km): 0
+E         --- exit 0 (as expected)
+E         
+E         === 5c. problem impact per bug group + day-cut before/after
+E         $ ../../../../../../../../../...venv/bin/python tools/problem_impact.py
+E         /opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '<tmp>/pytest-of-<user>/pytest-20/test_TC_56_fresh_copy_runs_fro0/clone/tools/problem_impact.py': [Errno 2] No such file or directory
+E         --- exit 2 (UNEXPECTED)
+E         
+E         === 5d. limitations (what fixed.py does not handle)
+E         $ ../../../../../../../../../...venv/bin/python tools/limitations.py
+E         /opt/homebrew/Cellar/python@3.11/3.11.15_1/Frameworks/Python.framework/Versions/3.11/Resources/Python.app/Contents/MacOS/Python: can't open file '<tmp>/pytest-of-<user>/pytest-20/test_TC_56_fresh_copy_runs_fro0/clone/tools/limitations.py': [Errno 2] No such file or directory
+E         --- exit 2 (UNEXPECTED)
+E         
+E         === SUMMARY
+E           OK   exit 0  1. generate data (seed 42)
+E           OK   exit 0  2a. fixed.py on F_BOUNDARY
+E           OK   exit 0  2b. GATE: qa_check vs hand calculation (F_BOUNDARY)
+E           OK   exit 0  3a. fixed.py on data/pings.csv
+E           OK   exit 0  3b. fixed.py on data/pings_clean.csv
+E           OK   exit 0  3c. old_reference.py on data/pings.csv
+E           OK   exit 0  4a. qa_check: fixed, faulty dataset (expect PASS)
+E           OK   exit 0  4b. qa_check: fixed, clean dataset (expect PASS)
+E           OK   exit 1  4c. qa_check: old, faulty dataset (expect FAIL, exit 1)
+E           OK   exit 0  5a. regression summary
+E           OK   exit 0  5b. before / after
+E           BAD  exit 2  5c. problem impact per bug group + day-cut before/after
+E           BAD  exit 2  5d. limitations (what fixed.py does not handle)
+E         run history: results/history/20261110T134407Z (row added to results/history/runs.csv)
+E         
+E       assert ([1, 1], True..., 'BAD'], ...) == ([0, 0], True...', 'OK'], ...)
+E         
+E         At index 0 diff: [1, 1] != [0, 0]
+E         Use -v to get more diff
+
+tests/test_checker.py:161: AssertionError
+=========================== short test summary info ============================
+FAILED tests/test_checker.py::test_TC_56_fresh_copy_runs_from_readme_command
+1 failed, 115 passed, 28 xfailed, 5 xpassed in 14.33s
+--- exit 1 (UNEXPECTED)
+
+=== SUMMARY
+  OK   exit 0  1. generate data (seed 42)
+  OK   exit 0  2a. fixed.py on F_BOUNDARY
+  OK   exit 0  2b. GATE: qa_check vs hand calculation (F_BOUNDARY)
+  OK   exit 0  3a. fixed.py on data/pings.csv
+  OK   exit 0  3b. fixed.py on data/pings_clean.csv
+  OK   exit 0  3c. old_reference.py on data/pings.csv
+  OK   exit 0  4a. qa_check: fixed, faulty dataset (expect PASS)
+  OK   exit 0  4b. qa_check: fixed, clean dataset (expect PASS)
+  OK   exit 1  4c. qa_check: old, faulty dataset (expect FAIL, exit 1)
+  OK   exit 0  5a. regression summary
+  OK   exit 0  5b. before / after
+  OK   exit 0  5c. problem impact per bug group + day-cut before/after
+  OK   exit 0  5d. limitations (what fixed.py does not handle)
+  BAD  exit 1  6. pytest

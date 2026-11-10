@@ -1,0 +1,15 @@
+TC_ID,Summary,Scenario,Type,Priority,Precondition,Step to reproduce,Expected Result
+TC-01,Verify total km for a full in-zone route,A. Inside Zone,Positive,High,"DRV-A has 20 pings along R1, all inside Z1, every 10 s, no faults",Run pipeline; read DRV-A total for the local day,Total km equals sum of segment lengths within tolerance
+TC-02,Verify each driver's total is kept separate,A. Inside Zone,Positive,High,DRV-A and DRV-B both drive R1 inside Z1 on the same local day at different times,Run pipeline; read both totals,Each total equals its own segments; no cross-contamination
+TC-03,Verify a segment fully inside the zone is counted in full,B. Zone Boundary,Positive,High,"Two consecutive DRV-A pings inside Z1, both at least 10 m from every edge",Run pipeline; read length for that segment,Full great-circle length counted
+TC-04,Verify a ping 20 m off road is kept,C. GPS Noise,Positive,High,"DRV-A ping 20 m off; R1 mid-route, speed valid",Run pipeline,Ping kept and included in distance
+TC-05,Check the conflict log lists each conflicting group once,D. Duplicate Pings,Positive,Medium,Two separate conflicting duplicate groups,Run pipeline; read log,"Two log entries, one per group"
+TC-06,Verify 16:30Z (00:30 local next day) is counted in the next day,E. UTC and Daily Cut,Positive,Medium,Segment starting at 16:30Z,Run pipeline,Counted in the next local day
+TC-07,Verify stored timestamps keep the Z suffix after a load and save,E. UTC and Daily Cut,Positive,High,Pings loaded from fixture,"Load, save, reload",Timestamps unchanged and still end in Z
+TC-08,Verify a late ping is placed by its own timestamp,F. Late and Out-of-Order,Positive,High,Ping stamped 09:00:30 arrives after the 09:01:00 ping,Run pipeline,Placed by own timestamp; included
+TC-09,Verify daily totals sum to overall total for each driver,G. Multi-Driver Reconciliation,Positive,High,Full dataset processed,Compare daily totals to overall totals per driver,Daily totals sum to overall total per driver
+TC-10,Verify generated intervals are exactly 10 s,I. Data Contract: Ping Interval,Positive,High,"Generated route, no injected faults",Measure time between consecutive pings per driver,Every interval exactly 10 s; no gaps or extra pings
+TC-11,Verify injected gap appears in the violation list,I. Data Contract: Ping Interval,Positive,Medium,30 s gap recorded in ground truth,Run checker,"Gap appears in violation list, matching ground truth"
+TC-12,Verify no duplicate timestamps per driver in clean generated data,I. Data Contract: Ping Interval,Positive,High,Clean generated dataset,Count duplicate ts_utc per driver_id,Zero duplicates
+TC-13,Check the per-driver interval summary is reported,I. Data Contract: Ping Interval,Positive,Medium,Dataset with one gap and one short interval,Run checker; read interval summary,Summary lists counts per driver
+TC-14,Verify warnings do not change distance,I. Data Contract: Ping Interval,Positive,High,Same route with and without irregular intervals,Run pipeline on both,Distance identical

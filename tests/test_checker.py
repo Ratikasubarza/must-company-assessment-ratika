@@ -132,8 +132,10 @@ def test_TC_55_checker_fails_old_implementation(record, outputs, tmp_path):
 
 def test_TC_56_fresh_copy_runs_from_readme_command(record, tmp_path):
     """Given a fresh copy of ONLY the files git tracks (`git ls-files`; untracked files are not copied),
-    When the README command `python run_all.py --no-tests` runs in it,
-    Then it exits 0 and writes results/before_after.csv and results/qa_fixed/qa_summary.txt.
+    When the README command `python run_all.py --no-tests` runs in it twice,
+    Then each run exits 0 and writes results/before_after.csv and results/qa_fixed/qa_summary.txt, and the
+    run history keeps BOTH runs: results/history/runs.csv has 2 rows with different run_ids, both overall OK,
+    each with its own history folder (qa_fixed/qa_summary.txt and run.log), and results/RUN_ID names the 2nd run.
     Needs a commit first: until fixed.py, run_all.py and the rest are committed, the copy is incomplete
     and this test fails."""
     files = subprocess.run(["git", "ls-files"], cwd=ROOT,
@@ -144,11 +146,19 @@ def test_TC_56_fresh_copy_runs_from_readme_command(record, tmp_path):
         if os.path.isfile(src) and not f.startswith("results/"):
             os.makedirs(dst / os.path.dirname(f), exist_ok=True)
             shutil.copy2(src, dst / f)
-    p = subprocess.run([sys.executable, "run_all.py", "--no-tests"], cwd=dst, capture_output=True, text=True)
-    act = (p.returncode, (dst / "results" / "before_after.csv").exists(),
-           (dst / "results" / "qa_fixed" / "qa_summary.txt").exists())
-    record("TC-56", IMPL, (0, True, True), act)
-    assert act == (0, True, True), p.stdout[-2000:] + p.stderr[-2000:]
+    runs = [subprocess.run([sys.executable, "run_all.py", "--no-tests"], cwd=dst, capture_output=True, text=True)
+            for _ in range(2)]
+    res = dst / "results"
+    hist = list(csv.DictReader(open(res / "history" / "runs.csv"))) if (res / "history" / "runs.csv").exists() else []
+    ids = [h["run_id"] for h in hist]
+    folders_ok = all((res / "history" / i / "qa_fixed" / "qa_summary.txt").exists()
+                     and (res / "history" / i / "run.log").exists() for i in ids)
+    last_id = (res / "RUN_ID").read_text().strip() if (res / "RUN_ID").exists() else ""
+    act = ([p.returncode for p in runs], (res / "before_after.csv").exists(), (res / "qa_fixed" / "qa_summary.txt").exists(),
+           len(hist), len(set(ids)), [h["overall"] for h in hist], folders_ok, bool(ids) and last_id == ids[-1])
+    exp = ([0, 0], True, True, 2, 2, ["OK", "OK"], True, True)
+    record("TC-56", IMPL, exp, act)
+    assert act == exp, runs[-1].stdout[-2000:] + runs[-1].stderr[-2000:]
 
 
 @pytest.mark.parametrize("name,tc,needle", [

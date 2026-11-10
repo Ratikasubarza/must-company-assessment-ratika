@@ -1,0 +1,150 @@
+TC_ID,implementation,result,expected,actual,group,test
+NC-01,fixed,FAIL,0.0,1.6551355160494017,functional,test_NC_01_parked_one_hour_with_5m_jitter_is_zero
+RTC-01,fixed,PASS,"(0.4225407212493232, 0.4225407212493232, 0)","(0.4225407212493231, 0.4225407212493231, 0)",functional,test_RTC_01_full_in_zone_route_no_faults
+RTC-02,fixed,PASS,"[(['2026-11-07'], 0.4225407212493232, 0.4225407212493232), (['2026-11-07'], 0.2001508679602057, 0.2001508679602057)]","[(['2026-11-07'], 0.4225407212493231, 0.4225407212493231), (['2026-11-07'], 0.20015086796020568, 0.20015086796020568)]",functional,test_RTC_02_each_driver_total_equals_its_own_segments
+RTC-03,fixed,PASS,22.238985,22.238985,functional,test_RTC_03_segment_fully_inside_counts_in_full
+RTC-04,fixed,PASS,"('ACCEPTED', 0.2309693095534848)","('ACCEPTED', 0.2309693095534848)",functional,test_RTC_04_ping_20m_off_road_kept
+RTC-05,fixed,PASS,"['2', '4']","['2', '4']",functional,test_RTC_05_conflict_log_once_per_group
+RTC-06,fixed,PASS,['2026-11-08'],['2026-11-08'],functional,test_RTC_06_segment_starting_1630z_in_next_local_day
+RTC-07,fixed,PASS,"['2026-11-07T01:00:00Z', '2026-11-07T01:00:10Z', '2026-11-07T01:00:20Z', '2026-11-07T01:00:30Z', '2026-11-07T01:00:40Z', '2026-11-07T01:00:50Z', '2026-11-07T01:01:00Z', '2026-11-07T01:01:10Z']","['2026-11-07T01:00:00Z', '2026-11-07T01:00:10Z', '2026-11-07T01:00:20Z', '2026-11-07T01:00:30Z', '2026-11-07T01:00:40Z', '2026-11-07T01:00:50Z', '2026-11-07T01:01:00Z', '2026-11-07T01:01:10Z']",functional,test_RTC_07_timestamps_keep_z_after_load_save_reload
+RTC-08,fixed,PASS,"(['1', '2', '3', '4', '5', '6', '7'], 'ACCEPTED', 0.2668678239469409)","(['1', '2', '3', '4', '5', '6', '7'], 'ACCEPTED', 0.26686782394694103)",functional,test_RTC_08_late_ping_placed_by_own_timestamp
+RTC-09,fixed,PASS,"({}, ['DRV-03', 'DRV-07', 'DRV-10'])","({}, ['DRV-03', 'DRV-07', 'DRV-10'])",functional,test_RTC_09_daily_totals_sum_to_overall_total[pings.csv]
+RTC-09,fixed,PASS,"({}, ['DRV-03', 'DRV-07', 'DRV-10'])","({}, ['DRV-03', 'DRV-07', 'DRV-10'])",functional,test_RTC_09_daily_totals_sum_to_overall_total[pings_clean.csv]
+RTC-10,fixed,PASS,[],[],functional,test_RTC_10_generated_intervals_are_exactly_10s
+RTC-11,qa_check,PASS,"[('DRV-02', '143'), ('DRV-02', '70'), ('DRV-03', '176'), ('DRV-04', '145'), ('DRV-05', '110'), ('DRV-08', '140'), ('DRV-09', '163'), ('DRV-09', '50')]","[('DRV-02', '143'), ('DRV-02', '70'), ('DRV-03', '176'), ('DRV-04', '145'), ('DRV-05', '110'), ('DRV-08', '140'), ('DRV-09', '163'), ('DRV-09', '50')]",checker,test_RTC_11_injected_gap_in_violation_list
+RTC-12,fixed,PASS,0,0,functional,test_RTC_12_no_duplicate_timestamps_in_clean_data
+RTC-13,qa_check,PASS,"('DRV-A', '1', '1')","('DRV-A', '1', '1')",checker,test_RTC_13_interval_summary_per_driver
+RTC-14,fixed,PASS,"(0.4003017359204114, 2)","(0.4003017359204114, 2)",functional,test_RTC_14_irregular_intervals_do_not_change_distance
+TC-00,qa_check,PASS,"(0, 1)","(0, 1)",checker,test_TC_00_checker_matches_hand_calculation_on_F_BOUNDARY
+TC-00,qa_check,PASS,"(1, True)","(1, True)",checker,test_TC_00_checker_tolerance_boundary_on_F_BOUNDARY[missing_row_read_as_0_km-None-1]
+TC-00,qa_check,PASS,0,0,checker,test_TC_00_checker_tolerance_boundary_on_F_BOUNDARY[plus_0.0009_km_within_tolerance-0.0009-0]
+TC-00,qa_check,PASS,1,1,checker,test_TC_00_checker_tolerance_boundary_on_F_BOUNDARY[plus_0.0011_km_outside_tolerance-0.0011-1]
+TC-01,fixed,PASS,"(0.4225407212493232, 0.4225407212493232)","(0.4225407212493231, 0.4225407212493231)",functional,test_TC_01_full_in_zone_route_total
+TC-02,fixed,PASS,"(0.4225407212493232, 0.2001508679602057, 0.2001508679602057)","(0.4225407212493231, 0.20015086796020568, 0.20015086796020568)",functional,test_TC_02_driver_totals_are_separate
+TC-03,fixed,PASS,0.0,0.0,functional,test_TC_03_route_entirely_outside_zone_is_zero
+TC-04,fixed,PASS,"(0.0, [])","(0.0, [])",functional,test_TC_04_single_inside_ping_gives_zero_and_no_error
+TC-05,fixed,PASS,"(0.0, 361)","(0.0, 361)",functional,test_TC_05_parked_one_hour_identical_coordinates_only_is_zero
+TC-06,fixed,PASS,0.5559746332227936,0.5559746332227937,regression,test_TC_06_outside_zone_distance_excluded[fixed]
+TC-06,old_reference,FAIL,0.5559746332227936,0.6122571993630046,regression,test_TC_06_outside_zone_distance_excluded[old_reference]
+TC-07,fixed,PASS,"(True, 'ACCEPTED')","(True, 'ACCEPTED')",functional,test_TC_07_ping_on_edge_is_inside
+TC-08,fixed,PASS,0.0,0.0,functional,test_TC_08_outside_to_edge_segment_has_zero_inside_length
+TC-09,fixed,PASS,22.239,22.239,functional,test_TC_09_inside_to_outside_segment_clipped_at_top_edge
+TC-10,fixed,PASS,0.4729159497789537,0.4729159498078577,functional,test_TC_10_segment_crossing_two_edges_clipped
+TC-11,fixed,PASS,0.5114966625649701,0.5114966625649702,functional,test_TC_11_multiple_entries_and_exits_add_up
+TC-12,fixed,PASS,"(True, 222.389853)","(True, 222.389853)",functional,test_TC_12_ping_on_vertex_is_inside
+TC-13,fixed,PASS,InputError mentioning swapped,"zone coordinates look swapped (lat, lon instead of lon, lat): the route does not touch the zone, but it touches the swapped zone",functional,test_TC_13_swapped_zone_file_rejected
+TC-14,fixed,PASS,True,True,regression,test_TC_14_boundary_ping_is_inside[fixed]
+TC-14,old_reference,FAIL,True,False,regression,test_TC_14_boundary_ping_is_inside[old_reference]
+TC-15,fixed,PASS,0.22238985328911748,0.22238985328911748,regression,test_TC_15_outside_to_inside_segment_is_clipped[fixed]
+TC-15,old_reference,FAIL,0.22238985328911748,0.1669792361899104,regression,test_TC_15_outside_to_inside_segment_is_clipped[old_reference]
+TC-16,fixed,PASS,"('DROPPED_OFFROAD', 0.4003017359204114)","('DROPPED_OFFROAD', 0.40030173592041146)",functional,test_TC_16_ping_150m_off_road_dropped
+TC-17,fixed,PASS,"('ACCEPTED', 'DROPPED_OFFROAD', 0.5284105894499995)","('ACCEPTED', 'DROPPED_OFFROAD', 0.5284105894499995)",functional,test_TC_17_ping_99m_kept_101m_dropped
+TC-18,fixed,PASS,"('ACCEPTED', False)","('ACCEPTED', False)",regression,test_TC_18_ping_exactly_100m_off_road_is_kept[fixed]
+TC-18,old_reference,FAIL,"('ACCEPTED', False)","('ACCEPTED', True)",regression,test_TC_18_ping_exactly_100m_off_road_is_kept[old_reference]
+TC-19,fixed,PASS,"['DROPPED_OFFROAD', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', None]","['DROPPED_OFFROAD', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', None]",functional,test_TC_19_first_valid_ping_becomes_speed_anchor
+TC-19,fixed,PASS,"['DROPPED_OFFROAD', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']","['DROPPED_OFFROAD', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']",guard,test_TC_19_guard_first_valid_ping_is_speed_anchor[fixed]
+TC-19,old_reference,FAIL,"['DROPPED_OFFROAD', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']","['DROPPED_SPEED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']",guard,test_TC_19_guard_first_valid_ping_is_speed_anchor[old_reference]
+TC-20,fixed,PASS,"(0.0, False)","(0.0, False)",functional,test_TC_20_every_ping_off_road_gives_zero_no_nan
+TC-21,fixed,PASS,"(0.22238985328911748, True)","(0.2223898532891176, True)",functional,test_TC_21_noise_of_one_driver_does_not_change_another
+TC-22,fixed,PASS,"('DROPPED_SPEED', ['3'])","('DROPPED_SPEED', ['3'])",functional,test_TC_22_ping_at_160kmh_dropped
+TC-23,fixed,PASS,"['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']","['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']",regression,test_TC_23_speed_exactly_150_kept[fixed]
+TC-23,old_reference,FAIL,"['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']","['ACCEPTED', 'DROPPED_SPEED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']",regression,test_TC_23_speed_exactly_150_kept[old_reference]
+TC-24,fixed,PASS,"['ACCEPTED', 'ACCEPTED']","['ACCEPTED', 'ACCEPTED']",regression,test_TC_24_actual_time_delta_used[fixed]
+TC-24,fixed,PASS,100.00000000903674,100.00000000903675,regression,test_TC_24_long_distance_uses_mean_earth_radius[fixed]
+TC-24,old_reference,FAIL,"['ACCEPTED', 'ACCEPTED']","['DROPPED_SPEED', 'ACCEPTED']",regression,test_TC_24_actual_time_delta_used[old_reference]
+TC-24,old_reference,FAIL,100.00000000903674,0.0,regression,test_TC_24_long_distance_uses_mean_earth_radius[old_reference]
+TC-25,fixed,PASS,"('ACCEPTED', 'DUPLICATE')","('ACCEPTED', 'DUPLICATE')",functional,test_TC_25_same_timestamp_different_coordinates_no_division_by_zero
+TC-25,fixed,PASS,"['ACCEPTED', 'DUPLICATE']","['ACCEPTED', 'DUPLICATE']",guard,test_TC_25_guard_same_timestamp_different_coordinates_no_crash[fixed]
+TC-25,old_reference,FAIL,"['ACCEPTED', 'DUPLICATE']","['DUPLICATE', 'ACCEPTED']",guard,test_TC_25_guard_same_timestamp_different_coordinates_no_crash[old_reference]
+TC-26,fixed,PASS,"['ACCEPTED', 'ACCEPTED', 'DROPPED_SPEED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 0.17791188263129395]","['ACCEPTED', 'ACCEPTED', 'DROPPED_SPEED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 0.17791188263129393]",functional,test_TC_26_spike_does_not_move_the_anchor
+TC-26,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'DROPPED_SPEED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.17791188263129395)","(['ACCEPTED', 'ACCEPTED', 'DROPPED_SPEED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.17791188263129393)",guard,test_TC_26_guard_spike_does_not_move_anchor[fixed]
+TC-26,old_reference,FAIL,"(['ACCEPTED', 'ACCEPTED', 'DROPPED_SPEED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.17791188263129395)","(['ACCEPTED', 'DROPPED_SPEED', 'DROPPED_SPEED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.08905559263461889)",guard,test_TC_26_guard_spike_does_not_move_anchor[old_reference]
+TC-27,fixed,PASS,"('ACCEPTED', 16.012)","('ACCEPTED', 16.012)",functional,test_TC_27_speed_measured_from_last_accepted_not_dropped_ping
+TC-27,fixed,PASS,"['ACCEPTED', 'ACCEPTED']","['ACCEPTED', 'ACCEPTED']",guard,test_TC_27_guard_valid_ping_after_dropped_noise_is_kept[fixed]
+TC-27,old_reference,PASS,"['ACCEPTED', 'ACCEPTED']","['ACCEPTED', 'ACCEPTED']",guard,test_TC_27_guard_valid_ping_after_dropped_noise_is_kept[old_reference]
+TC-28,fixed,PASS,"(1441, 0.0)","(1441, 0.0)",functional,test_TC_28_stationary_four_hours_identical_coordinates_only_is_zero
+TC-29,fixed,PASS,"('DROPPED_OFFROAD', 0.4003017359204114)","('DROPPED_OFFROAD', 0.40030173592041146)",regression,test_TC_29_ping_150m_off_road_excluded[fixed]
+TC-29,old_reference,FAIL,"('DROPPED_OFFROAD', 0.4003017359204114)","('ACCEPTED', 0.624955804913454)",regression,test_TC_29_ping_150m_off_road_excluded[old_reference]
+TC-30,fixed,PASS,"('ACCEPTED', 'DROPPED_SPEED', 0.13343391197347046)","('ACCEPTED', 'DROPPED_SPEED', 0.13343391197347043)",regression,test_TC_30_ping_at_160kmh_excluded[fixed]
+TC-30,old_reference,FAIL,"('ACCEPTED', 'DROPPED_SPEED', 0.13343391197347046)","('DROPPED_SPEED', 'ACCEPTED', 0.4894701312256619)",regression,test_TC_30_ping_at_160kmh_excluded[old_reference]
+TC-31,fixed,PASS,"('DROPPED_OFFROAD', 'ACCEPTED', 0.17791188263129395)","('DROPPED_OFFROAD', 'ACCEPTED', 0.17791188263129395)",regression,test_TC_31_speed_anchored_on_last_accepted_ping[fixed]
+TC-31,old_reference,FAIL,"('DROPPED_OFFROAD', 'ACCEPTED', 0.17791188263129395)","('DROPPED_SPEED', 'ACCEPTED', 0.044527796317309444)",regression,test_TC_31_speed_anchored_on_last_accepted_ping[old_reference]
+TC-32,fixed,PASS,"('DUPLICATE', 0.17791188263129395, 0)","('DUPLICATE', 0.17791188263129395, 0)",functional,test_TC_32_exact_duplicate_counted_once
+TC-33,fixed,PASS,"('ACCEPTED', 1, True)","('ACCEPTED', 1, True)",functional,test_TC_33_conflict_first_kept_and_logged
+TC-33,fixed,PASS,1,1,regression,test_TC_33_conflicting_duplicate_is_logged[fixed]
+TC-33,fixed,PASS,"('ACCEPTED', 'DUPLICATE', 0.17791188263129395)","('ACCEPTED', 'DUPLICATE', 0.17791188263129395)",regression,test_TC_33_duplicate_first_occurrence_kept[fixed]
+TC-33,old_reference,FAIL,1,0,regression,test_TC_33_conflicting_duplicate_is_logged[old_reference]
+TC-33,old_reference,FAIL,"('ACCEPTED', 'DUPLICATE', 0.17791188263129395)","('DUPLICATE', 'ACCEPTED', 0.20037508342756682)",regression,test_TC_33_duplicate_first_occurrence_kept[old_reference]
+TC-34,fixed,PASS,"(0, 0.08895594131564698, 0.08895594131564698)","(0, 0.08895594131564702, 0.08895594131564703)",functional,test_TC_34_same_second_different_drivers_not_deduplicated
+TC-34,fixed,PASS,"['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']","['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']",regression,test_TC_34_same_timestamp_other_driver_not_deduplicated[fixed]
+TC-34,old_reference,FAIL,"['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']","['DUPLICATE', 'DUPLICATE', 'DUPLICATE', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED']",regression,test_TC_34_same_timestamp_other_driver_not_deduplicated[old_reference]
+TC-35,fixed,PASS,"{('DRV-A', '2026-11-07'): 0.5337356478938818}","{('DRV-A', '2026-11-07'): 0.5337356478938818}",functional,test_TC_35_half_duplicates_same_as_deduplicated
+TC-35,fixed,PASS,"{('DRV-A', '2026-11-07'): 0.5337356478938818}","{('DRV-A', '2026-11-07'): 0.5337356478938818}",guard,test_TC_35_guard_half_duplicates_same_as_deduplicated[fixed]
+TC-35,old_reference,PASS,"{('DRV-A', '2026-11-07'): 0.6233891484423322}","{('DRV-A', '2026-11-07'): 0.6233891484423322}",guard,test_TC_35_guard_half_duplicates_same_as_deduplicated[old_reference]
+TC-36,fixed,PASS,DUPLICATE,DUPLICATE,functional,test_TC_36_duplicate_after_later_ping_still_deduplicated
+TC-37,fixed,PASS,"('DUPLICATE', 0.22238985328911748)","('DUPLICATE', 0.2223898532891176)",regression,test_TC_37_duplicate_pair_counted_once[fixed]
+TC-37,old_reference,FAIL,"('DUPLICATE', 0.22238985328911748)","('ACCEPTED', 0.4184876202720855)",regression,test_TC_37_duplicate_pair_counted_once[old_reference]
+TC-38,fixed,PASS,"(2, True, True, False)","(2, True, True, False)",functional,test_TC_38_timestamp_without_z_rejected_naming_the_row
+TC-39,fixed,PASS,"['2026-11-07', '2026-11-08', '2026-11-08', '2026-11-08']","['2026-11-07', '2026-11-08', '2026-11-08', '2026-11-08']",functional,test_TC_39_local_midnight_is_15z
+TC-40,fixed,PASS,"{'2026-11-07': 0.08895594131564698, '2026-11-08': 0.04447797065782349}","{'2026-11-07': 0.08895594131564702, '2026-11-08': 0.04447797065782351}",functional,test_TC_40_segment_over_midnight_belongs_to_start_day
+TC-41,fixed,PASS,"identical outputs for UTC+8, UTC, UTC+9",identical=True (data/pings.csv),functional,test_TC_41_output_independent_of_machine_timezone[data/pings.csv]
+TC-41,fixed,PASS,"identical outputs for UTC+8, UTC, UTC+9",identical=True (fixtures/F_DAYCUT.csv),functional,test_TC_41_output_independent_of_machine_timezone[fixtures/F_DAYCUT.csv]
+TC-41,fixed,PASS,True,True,guard,test_TC_41_guard_output_independent_of_machine_timezone[fixed]
+TC-41,old_reference,PASS,True,True,guard,test_TC_41_guard_output_independent_of_machine_timezone[old_reference]
+TC-42,fixed,PASS,"{'2026-11-07': 0.04447797065782349, '2026-11-08': 0.08895594131564698, '2026-11-09': 0.08895594131564698, '2026-11-10': 0.04447797065782349}","{'2026-11-07': 0.04447797065782351, '2026-11-08': 0.08895594131564684, '2026-11-09': 0.08895594131564702, '2026-11-10': 0.04447797065782342}",functional,test_TC_42_three_local_midnights
+TC-43,fixed,PASS,{'2026-11-08': 0.08895594131564698},{'2026-11-08': 0.08895594131564692},regression,test_TC_43_ping_at_17z_goes_to_next_local_day[fixed]
+TC-43,old_reference,FAIL,{'2026-11-08': 0.08895594131564698},{'2026-11-07': 0.08905559263461879},regression,test_TC_43_ping_at_17z_goes_to_next_local_day[old_reference]
+TC-44,fixed,PASS,True,True,regression,test_TC_44_timestamp_without_z_rejected[fixed]
+TC-44,old_reference,FAIL,True,accepted (no error),regression,test_TC_44_timestamp_without_z_rejected[old_reference]
+TC-45,fixed,PASS,"('ACCEPTED', True, ['4'])","('ACCEPTED', True, ['4'])",functional,test_TC_45_late_ping_placed_by_own_timestamp
+TC-46,fixed,PASS,"{('DRV-01', '2026-11-07'): 2.742678269, ('DRV-02', '2026-11-07'): 5.383818793, ('DRV-03', '2026-11-07'): 1.144127588, ('DRV-03', '2026-11-08'): 1.16135803, ('DRV-04', '2026-11-08'): 2.312938886, ('DRV-05', '2026-11-08'): 5.286503701, ('DRV-06', '2026-11-08'): 3.832870808, ('DRV-07', '2026-11-08')...","{('DRV-01', '2026-11-07'): 2.742678269, ('DRV-02', '2026-11-07'): 5.383818793, ('DRV-03', '2026-11-07'): 1.144127588, ('DRV-03', '2026-11-08'): 1.16135803, ('DRV-04', '2026-11-08'): 2.312938886, ('DRV-05', '2026-11-08'): 5.286503701, ('DRV-06', '2026-11-08'): 3.832870808, ('DRV-07', '2026-11-08')...",functional,test_TC_46_reversed_file_gives_same_result[pings.csv]
+TC-46,fixed,PASS,"{('DRV-01', '2026-11-07'): 2.750237917, ('DRV-02', '2026-11-07'): 5.386327853, ('DRV-03', '2026-11-07'): 1.144127588, ('DRV-03', '2026-11-08'): 1.16135803, ('DRV-04', '2026-11-08'): 2.312938886, ('DRV-05', '2026-11-08'): 5.342449178, ('DRV-06', '2026-11-08'): 3.832870808, ('DRV-07', '2026-11-08')...","{('DRV-01', '2026-11-07'): 2.750237917, ('DRV-02', '2026-11-07'): 5.386327853, ('DRV-03', '2026-11-07'): 1.144127588, ('DRV-03', '2026-11-08'): 1.16135803, ('DRV-04', '2026-11-08'): 2.312938886, ('DRV-05', '2026-11-08'): 5.342449178, ('DRV-06', '2026-11-08'): 3.832870808, ('DRV-07', '2026-11-08')...",functional,test_TC_46_reversed_file_gives_same_result[pings_clean.csv]
+TC-46,fixed,PASS,"{('DRV-01', '2026-11-07'): 2.750237917082232, ('DRV-02', '2026-11-07'): 5.3863278529361045, ('DRV-03', '2026-11-07'): 1.1441275881481354, ('DRV-03', '2026-11-08'): 1.1613580298130932, ('DRV-04', '2026-11-08'): 2.3129388861057665, ('DRV-05', '2026-11-08'): 5.342449177647011, ('DRV-06', '2026-11-08...","{('DRV-01', '2026-11-07'): 2.750237917082232, ('DRV-02', '2026-11-07'): 5.3863278529361045, ('DRV-03', '2026-11-07'): 1.1441275881481354, ('DRV-03', '2026-11-08'): 1.1613580298130932, ('DRV-04', '2026-11-08'): 2.3129388861057665, ('DRV-05', '2026-11-08'): 5.342449177647011, ('DRV-06', '2026-11-08...",guard,test_TC_46_guard_reversed_file_same_result[fixed]
+TC-46,old_reference,FAIL,"{('DRV-01', '2026-11-07'): 2.711885707963586, ('DRV-02', '2026-11-07'): 5.338227123016702, ('DRV-03', '2026-11-07'): 2.2748728252691404, ('DRV-04', '2026-11-07'): 0.786386694610253, ('DRV-04', '2026-11-08'): 1.5350988131071577, ('DRV-05', '2026-11-08'): 5.254636158848513, ('DRV-06', '2026-11-08')...","{('DRV-01', '2026-11-07'): 2.7564357681790534, ('DRV-02', '2026-11-07'): 5.445405528752465, ('DRV-03', '2026-11-07'): 2.2748728252691404, ('DRV-04', '2026-11-08'): 1.5350988131071577, ('DRV-04', '2026-11-07'): 0.7863866946102531, ('DRV-05', '2026-11-08'): 5.254636158848513, ('DRV-06', '2026-11-08...",guard,test_TC_46_guard_reversed_file_same_result[old_reference]
+TC-47,fixed,PASS,"('ACCEPTED', 0.5789058931266677)","('ACCEPTED', 0.5789058931266677)",functional,test_TC_47_late_ping_judged_in_timestamp_order
+TC-48,fixed,PASS,"(0.22238985328911748, 0.11119492664455874)","(0.2223898532891176, 0.11119492664455864)",functional,test_TC_48_late_ping_of_one_driver_interleaved_with_another
+TC-49,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.2668678239469409)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.26686782394694103)",regression,test_TC_49_late_ping_placed_by_timestamp[fixed]
+TC-49,old_reference,FAIL,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.2668678239469409)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.40075016685578485)",regression,test_TC_49_late_ping_placed_by_timestamp[old_reference]
+TC-50,fixed,PASS,max |sum(daily) - total| <= 1e-06 km,2.66e-15 km over 12 drivers,functional,test_TC_50_daily_totals_sum_to_overall_total
+TC-51,fixed,PASS,['DRV-F'],['DRV-F'],functional,test_TC_51_day_with_only_one_driver
+TC-52,fixed,PASS,|diff| <= 0.001 km (2477 segments),7.33e-07 km,functional,test_TC_52_rounding_error_within_tolerance
+TC-52,fixed,PASS,True,True,guard,test_TC_52_guard_rounding_error_within_tolerance[fixed]
+TC-52,old_reference,PASS,True,True,guard,test_TC_52_guard_rounding_error_within_tolerance[old_reference]
+TC-53,fixed,PASS,{},{},regression,test_TC_53_daily_totals_sum_to_driver_totals[fixed]
+TC-53,old_reference,FAIL,{},{'DRV-11': -0.087398},regression,test_TC_53_daily_totals_sum_to_driver_totals[old_reference]
+TC-54,qa_check,PASS,"(0, True, True)","(0, True, True)",checker,test_TC_54_clean_dataset_zero_violations
+TC-55,qa_check,PASS,"(1, True, True, True)","(1, True, True, True)",checker,test_TC_55_checker_fails_old_implementation
+TC-55,qa_check,PASS,"(0, 0, 0, True)","(0, 0, 0, True, 'fault detection: injected 54, TP 62, FP 0, FN 0, precision 1.000, recall 1.000')",checker,test_TC_55_each_injected_fault_flagged_with_precision_recall
+TC-56,qa_check,PASS,"([0, 0], True, True, 2, 2, ['OK', 'OK'], True, True)","([0, 0], True, True, 2, 2, ['OK', 'OK'], True, True)",checker,test_TC_56_fresh_copy_runs_from_readme_command
+TC-57,old_reference,PASS,17 bugs caught alone; 0 checks pass with all bugs on; 0 fail with no bugs,17 bugs caught alone (missed []); 0 pass with all bugs on []; 0 fail with no bugs [],meta,test_TC_57_each_documented_bug_fails_its_regression_test
+TC-58,fixed,PASS,0 of 32 fail,0 of 32 fail [],meta,test_TC_58_fixed_passes_all_regression_checks
+TC-59,fixed,PASS,"{'pings.csv': '8740b276e1bcaf7a68300c0c280c8be03c70685bfcbc56c7905d69372471287a', 'ground_truth.csv': '8b0f0e3b2a7e7fe12a6b451781dd6081666bdeb3b9a9e71fed53148e7f56a6c4'}","run1==run2: True; run1: {'pings.csv': '8740b276e1bcaf7a68300c0c280c8be03c70685bfcbc56c7905d69372471287a', 'ground_truth.csv': '8b0f0e3b2a7e7fe12a6b451781dd6081666bdeb3b9a9e71fed53148e7f56a6c4'}",functional,test_TC_59_same_seed_gives_identical_dataset
+TC-60,fixed,PASS,InputError with 'swapped',"fixtures/F_INVALID_swapped.csv: input rejected, 1 problem(s): |   lat/lon look swapped: 0% of pings are within ",functional,test_TC_60_to_64_pipeline_rejects_bad_pings[F_INVALID_swapped.csv-swapped]
+TC-60,qa_check,PASS,"exit 2, 'swapped'",exit 2: INPUT ERROR: pings fixtures/F_INVALID_swapped.csv: lat/lon look swapped,checker,test_TC_60_to_64_checker_rejects_bad_input[F_INVALID_swapped.csv-TC-60-swapped]
+TC-61,fixed,PASS,InputError with 'offset',"fixtures/F_INVALID_offset.csv: input rejected, 1 problem(s): |   line 5 (driver DRV-A, ping 4): timestamp '2026",functional,test_TC_60_to_64_pipeline_rejects_bad_pings[F_INVALID_offset.csv-offset]
+TC-61,qa_check,PASS,"exit 2, 'offset'",exit 2: INPUT ERROR: pings fixtures/F_INVALID_offset.csv: 1 invalid row(s): |   l,checker,test_TC_60_to_64_checker_rejects_bad_input[F_INVALID_offset.csv-TC-61-offset]
+TC-62,qa_check,PASS,"exit 2, 'no Z'",exit 2: INPUT ERROR: pings fixtures/F_INVALID_no_z.csv: 2 invalid row(s): |   lin,checker,test_TC_60_to_64_checker_rejects_bad_input[F_INVALID_no_z.csv-TC-62-no Z]
+TC-63,fixed,PASS,InputError with 'out of range',"fixtures/F_INVALID_range.csv: input rejected, 2 problem(s): |   line 6 (driver DRV-A, ping 5): lat '91.0' is ou",functional,test_TC_60_to_64_pipeline_rejects_bad_pings[F_INVALID_range.csv-out of range]
+TC-63,qa_check,PASS,"exit 2, 'out of range'",exit 2: INPUT ERROR: pings fixtures/F_INVALID_range.csv: 2 invalid row(s): |   li,checker,test_TC_60_to_64_checker_rejects_bad_input[F_INVALID_range.csv-TC-63-out of range]
+TC-64,fixed,PASS,InputError with 'missing',"fixtures/F_INVALID_missing_col.csv: input rejected, 1 problem(s): |   missing required column(s): lat",functional,test_TC_60_to_64_pipeline_rejects_bad_pings[F_INVALID_missing_col.csv-missing]
+TC-64,qa_check,PASS,"exit 2, 'missing column'",exit 2: INPUT ERROR: pings fixtures/F_INVALID_missing_col.csv: missing column(s,checker,test_TC_60_to_64_checker_rejects_bad_input[F_INVALID_missing_col.csv-TC-64-missing column]
+TC-65,qa_check,PASS,"(0, True)","(0, True)",checker,test_TC_65_checker_help
+TC-66,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 149.9, 0.44477970657823496)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 149.9, 0.44477970657823496)",functional,test_TC_66_speed_149_9_kmh_just_below_limit_kept
+TC-66,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.44477970657823496)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.44477970657823496)",guard,test_TC_66_guard_speed_149_9_kmh_kept[fixed]
+TC-66,old_reference,FAIL,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.44477970657823496)","(['ACCEPTED', 'DROPPED_SPEED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.028422648986792653)",guard,test_TC_66_guard_speed_149_9_kmh_kept[old_reference]
+TC-67,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.17791188263129395, [('3', 'interval 10.1 s'), ('4', 'interval 9.99 s')])","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.17791188263129395, [('3', 'interval 10.1 s'), ('4', 'interval 9.99 s')])",functional,test_TC_67_intervals_10_1s_and_9_99s_inside_zone
+TC-67,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.17791188263129395)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.17791188263129395)",guard,test_TC_67_guard_intervals_10_1s_and_9_99s_do_not_change_distance[fixed]
+TC-67,old_reference,FAIL,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.17791188263129395)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.1781111852692377)",guard,test_TC_67_guard_intervals_10_1s_and_9_99s_do_not_change_distance[old_reference]
+TC-68,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.0, ['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], True, 0.17028066931956573)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.0, ['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], True, 0.17028066931956573)",functional,test_TC_68_negative_coordinates
+TC-68,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], ['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.0, 0.17028066931956573)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], ['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.0, 0.17028066931956573)",guard,test_TC_68_guard_negative_coordinates[fixed]
+TC-68,old_reference,FAIL,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], ['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.0, 0.17028066931956573)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], ['ACCEPTED', 'ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0.0, 0.17047142322584946)",guard,test_TC_68_guard_negative_coordinates[old_reference]
+TC-69,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.0, 0.04447797065782349)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.0, 0.04447797065782351)",functional,test_TC_69_same_driver_new_timestamp_same_coordinates_not_duplicate
+TC-69,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.04447797065782349)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.04447797065782351)",guard,test_TC_69_guard_new_timestamp_same_coordinates_not_duplicate[fixed]
+TC-69,old_reference,FAIL,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.04447797065782349)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.044527796317309444)",guard,test_TC_69_guard_new_timestamp_same_coordinates_not_duplicate[old_reference]
+TC-70,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.08895594131564698)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.08895594131564692)",functional,test_TC_70_same_driver_new_timestamp_new_coordinates_not_duplicate
+TC-70,fixed,PASS,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.08895594131564698)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.08895594131564692)",guard,test_TC_70_guard_new_timestamp_new_coordinates_not_duplicate[fixed]
+TC-70,old_reference,FAIL,"(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.08895594131564698)","(['ACCEPTED', 'ACCEPTED', 'ACCEPTED'], 0, 0.08905559263461879)",guard,test_TC_70_guard_new_timestamp_new_coordinates_not_duplicate[old_reference]
+TC-71,fixed,PASS,"(2, True, True, True, False)","(2, True, True, True, False)",functional,test_TC_71_invalid_time_08_59_99_rejected_for_both_drivers
+TC-71,fixed,PASS,True,True,guard,test_TC_71_guard_impossible_time_08_59_99_rejected[fixed]
+TC-71,old_reference,PASS,True,True,guard,test_TC_71_guard_impossible_time_08_59_99_rejected[old_reference]
+TC-71,qa_check,PASS,"exit 2, 'not a valid date/time'",exit 2: INPUT ERROR: pings fixtures/F_INVALID_bad_second.csv: 2 invalid row(s):,checker,test_TC_60_to_64_checker_rejects_bad_input[F_INVALID_bad_second.csv-TC-71-not a valid date/time]

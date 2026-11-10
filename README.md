@@ -32,7 +32,7 @@ python3.11 -m venv .venv
 | 2 | `python fixed.py --pings fixtures/F_BOUNDARY.csv --out out/F_BOUNDARY` then `python qa_check.py ... --ground-truth fixtures/F_BOUNDARY_ground_truth.csv` | PASS against the **hand calculation**; if not, the run stops here |
 | 3 | `python fixed.py --pings data/pings.csv --out out/fixed` (and `pings_clean.csv`), `python old_reference.py --pings data/pings.csv --out out/old` | report files |
 | 4 | `python qa_check.py --pings data/pings.csv --ground-truth data/ground_truth.csv --report out/fixed/daily_km.csv --events out/fixed/events.csv --out results/qa_fixed` | fixed: exit 0; old: exit 1, by design. `results/qa_old/qa_summary.txt` opens with a `NOTE:` line saying the FAIL is expected (it shows the checker catching the 17 planted bugs) |
-| 5 | `python regression_summary.py`, `python before_after.py` | results/regression_summary.*, results/regression_guards.csv, results/before_after.csv |
+| 5 | `python regression_summary.py`, `python before_after.py`, `python tools/problem_impact.py`, `python tools/limitations.py` | results/regression_summary.*, results/regression_guards.csv, results/before_after.csv, results/problem_impact.csv, results/problem_examples.csv, results/daycut_before_after.csv, results/problem_qa/, results/limitations.csv |
 | 6 | `python -m pytest tests -q --results-csv results/test_results.csv` | 0 failed; see "Expected pytest summary" below |
 
 **Commit before running.** TC-56 copies only files git tracks (`git ls-files`) and runs this README in
@@ -46,6 +46,18 @@ the copy. With files uncommitted it fails, and step 6 then reports BAD.
 - **xpassed 5** = guards that old_reference happens to pass (TC-27, TC-35, TC-41, TC-52, TC-71). Guards use
   `xfail(strict=False)`, so this is reported, not failed.
 - Any **failed** is a real problem. Any XPASS on a bug-regression test or on NC-01 fails the run (strict).
+
+### Run history (every run is kept)
+`results/` holds only the **latest** run; `run_all.py` clears it (except `results/history/`) at the start of
+each run. Every run, including one stopped by the F_BOUNDARY gate or run with `--no-tests`, is saved to:
+- `results/history/<run_id>/`: a copy of that run's results, plus `run.log` (all output) and `run_info.txt`
+  (git branch/commit, step results);
+- `results/history/runs.csv`: one row per run (overall OK/BAD, failed steps, pytest summary, each checker
+  result, bugs caught, guards passing), so failures and bugs can be compared across runs.
+
+`run_id` is the UTC start time (e.g. `20261108T115954Z`). If `results/` holds files that were never archived,
+the next run archives them as `unarchived_<time>` before clearing, so no result is lost. Commit
+`results/history/` along with the rest to keep the history in git.
 
 Use `python run_all.py --no-tests` to skip step 6. Run the groups separately:
 
@@ -83,7 +95,10 @@ Checker help: `python qa_check.py --help`. Exit codes: 0 pass, 1 check failure, 
 | `data/` | `pings.csv`, `ground_truth.csv` (DAILY_KM rows + FAULT rows), `pings_clean.csv`, `ground_truth_clean.csv`, R1 and Z1. |
 | `fixtures/` | F_BOUNDARY (+ hand calculation), F_ZONE, F_NOISE, F_STATIONARY, F_PARKED_JITTER, F_LONG, F_DUPLICATES, F_DUP_HALF_*, F_DAYCUT, F_LATE, F_INTERVALS_*, F_INVALID_* and test geometry. |
 | `tests/` | `test_functional.py` (fixed.py), `test_regression.py` (bug regressions: old fails, fixed passes; worst-case guards: fixed must pass; TC-57/58), `test_checker.py` (qa_check.py). Checks live in `regression_checks.py` and `regression_guards.py`. Each test is named by its TC_ID and has Given/When/Then. |
-| `results/` | `test_results.csv`, `before_after.csv`, `regression_summary.csv/.md`, `regression_guards.csv`, `qa_*` checker reports. |
+| `tools/` | `problem_impact.py` (each bug group on alone vs no bugs; day-cut before/after), `limitations.py` (11 measured limitations of fixed.py). Both run in step 5. |
+| `docs/` | `Test-assessment-Must Company - Ratika - Regression Test Cases.csv`: the sheet's "Regression Test Cases" tab as CSV (tested as RTC-01..RTC-14). The "Test Cases" tab (TC-01..TC-60) is not in the repo. |
+| `directive.md` | Objective, scope, requirements, completion criteria and results handoff (standalone; links use `REPO_URL`). |
+| `results/` | Latest run: `test_results.csv`, `before_after.csv`, `regression_summary.csv/.md`, `regression_guards.csv`, `problem_impact.csv`, `problem_examples.csv`, `daycut_before_after.csv`, `limitations.csv`, `qa_*` and `problem_qa/` checker reports, `RUN_ID`. Every run: `history/<run_id>/` and `history/runs.csv`. |
 
 ## Test IDs
 - `TC-xx`: the Test Cases tab (TC-01..TC-60, all covered). `RTC-xx`: the "Regression Test Cases" tab

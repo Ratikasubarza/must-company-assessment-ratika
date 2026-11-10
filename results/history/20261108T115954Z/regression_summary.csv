@@ -1,0 +1,18 @@
+bug,area,description,regression_tests,own_tests_failing_with_only_this_bug,other_tests_also_failing,own_tests_failing_with_all_bugs,own_tests_passing_on_fixed,caught
+BUG-01,Zone,A ping exactly on the zone edge counts as outside,TC-14 test_TC_14_boundary_ping_is_inside,1/1,,1/1,1/1,YES
+BUG-02,Zone,"No clipping: the whole segment counts if its start ping is inside, otherwise none of it",TC-15 test_TC_15_outside_to_inside_segment_is_clipped; TC-06 test_TC_06_outside_zone_distance_excluded,2/2,,2/2,2/2,YES
+BUG-03,Distance,"Haversine uses the equatorial radius 6,378,137 m instead of 6,371,000 m (all distances +0.11%)",TC-24 test_TC_24_long_distance_uses_mean_earth_radius,1/1,TC-15; TC-06; TC-29; TC-31; TC-23; TC-30; TC-33; TC-37; TC-43; TC-49,1/1,1/1,YES
+BUG-04,Noise,A ping at exactly 100 m from the road is dropped (`>=` instead of `>`),TC-18 test_TC_18_ping_exactly_100m_off_road_is_kept,1/1,,1/1,1/1,YES
+BUG-05,Noise,Off-road pings are logged as noise but still used for distance,TC-29 test_TC_29_ping_150m_off_road_excluded,1/1,TC-31,1/1,1/1,YES
+BUG-06,Noise,Implied speed always assumes a 10 s delta instead of the actual time delta,TC-24 test_TC_24_actual_time_delta_used,1/1,TC-24,1/1,1/1,YES
+BUG-07,Noise,A dropped ping becomes the speed anchor for the next ping,TC-31 test_TC_31_speed_anchored_on_last_accepted_ping,1/1,,1/1,1/1,YES
+BUG-08,Noise,A ping at exactly 150 km/h is dropped (`>=` instead of `>`),TC-23 test_TC_23_speed_exactly_150_kept,1/1,,1/1,1/1,YES
+BUG-09,Noise,"For a too-fast pair, drops the earlier (already accepted) ping and keeps the spike",TC-30 test_TC_30_ping_at_160kmh_excluded,1/1,,1/1,1/1,YES
+BUG-10,Duplicates,Keeps the last occurrence of a duplicate instead of the first,TC-33 test_TC_33_duplicate_first_occurrence_kept,1/1,TC-37,1/1,1/1,YES
+BUG-11,Duplicates,"Dedup key is ts_utc only, so different drivers at the same second are merged",TC-34 test_TC_34_same_timestamp_other_driver_not_deduplicated,1/1,TC-43,1/1,1/1,YES
+BUG-12,Duplicates,Only compares each row with the row directly above it; a duplicate arriving later is kept,TC-37 test_TC_37_duplicate_pair_counted_once,1/1,,1/1,1/1,YES
+BUG-13,Duplicates,Conflicting coordinates are not logged,TC-33 test_TC_33_conflicting_duplicate_is_logged,1/1,,1/1,1/1,YES
+BUG-14,Day cut,"Local day is the UTC date, not UTC+9",TC-43 test_TC_43_ping_at_17z_goes_to_next_local_day,1/1,,1/1,1/1,YES
+BUG-15,Day cut,A segment whose two pings fall on different days is left out of the daily report (still in the driver total),TC-53 test_TC_53_daily_totals_sum_to_driver_totals,1/1,,1/1,1/1,YES
+BUG-16,Input,Timestamps without Z are accepted and read as UTC,TC-44 test_TC_44_timestamp_without_z_rejected,1/1,,1/1,1/1,YES
+BUG-17,Order,"Pings are processed in file order, not sorted by ts_utc",TC-49 test_TC_49_late_ping_placed_by_timestamp,1/1,,1/1,1/1,YES

@@ -504,7 +504,7 @@ def main(argv=None):
               f"ground_truth{suffix}.csv: {len(gt) - n_f} driver-days, {n_f} faults")
     if not args.no_fixtures:
         names = build_fixtures(args.fixtures_dir, args.seed)
-        print(f"fixtures: {len(names)} files in {args.fixtures_dir}")
+        print(f"fixtures: {len(names)} files in {os.path.relpath(args.fixtures_dir, HERE)}")
 
 
 if __name__ == "__main__":

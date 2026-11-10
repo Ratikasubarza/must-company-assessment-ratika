@@ -1,0 +1,25 @@
+QA CHECK (SYNTHETIC data)
+pings: data/pings_clean.csv (2520 rows)   report: out/fixed_clean/daily_km.csv
+daily rows compared: 15   tolerance: 0.001 km   failed: 0
+fault detection: injected 0, TP 0, FP 0, FN 0, precision 1.000, recall 1.000
+  DROPPED_OFFROAD      TP   0  FP   0  FN   0
+  DROPPED_SPEED        TP   0  FP   0  FN   0
+  DUPLICATE_CONFLICT   TP   0  FP   0  FN   0
+  DUPLICATE_DROPPED    TP   0  FP   0  FN   0
+  INTERVAL_WARNING     TP   0  FP   0  FN   0
+  LATE_ARRIVAL         TP   0  FP   0  FN   0
+interval summary (violations = gaps + short intervals):
+  DRV-01   pings   230  regular   229  gaps   0  short   0
+  DRV-02   pings   198  regular   197  gaps   0  short   0
+  DRV-03   pings   217  regular   216  gaps   0  short   0
+  DRV-04   pings   228  regular   227  gaps   0  short   0
+  DRV-05   pings   218  regular   217  gaps   0  short   0
+  DRV-06   pings   217  regular   216  gaps   0  short   0
+  DRV-07   pings   195  regular   194  gaps   0  short   0
+  DRV-08   pings   206  regular   205  gaps   0  short   0
+  DRV-09   pings   195  regular   194  gaps   0  short   0
+  DRV-10   pings   202  regular   201  gaps   0  short   0
+  DRV-11   pings   195  regular   194  gaps   0  short   0
+  DRV-12   pings   219  regular   218  gaps   0  short   0
+interval violations: 0
+RESULT: PASS (0 failure(s))
