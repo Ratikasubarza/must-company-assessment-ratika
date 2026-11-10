@@ -1,0 +1,70 @@
+TC_ID,Scenario,Type,Priority,Precondition,Step to reproduce,Expected Result
+TC-01,A. Inside Zone,Positive,High,"R1 fully inside Z1, pings every 10 s, no faults",Run pipeline,Total km equals sum of segment lengths within tolerance
+TC-02,A. Inside Zone,Positive,High,Both drive R1 inside Z1 on same day at different times,Run pipeline,Each driver total is separate; no cross-contamination
+TC-03,A. Inside Zone,Negative,Medium,Route entirely outside Z1,Run pipeline,0 km
+TC-04,A. Inside Zone,Edge,Medium,"Only one ping inside Z1, then leaves",Run pipeline,"0 km, no error"
+TC-05,A. Inside Zone,Edge,Low,"Parked inside Z1 for 1 hour, identical coordinates",Run pipeline,0 km
+TC-06,A. Inside Zone,Regression,High,Segment inside Z1 plus segment outside Z1,Run old and fixed,Outside-zone distance excluded
+TC-07,B. Zone Boundary,Edge,High,Ping 2 exactly on left edge lon 0.0060,Run pipeline,Ping treated as inside (covers)
+TC-08,B. Zone Boundary,Edge,High,Segment from ping 1 for outside to ping 2 on edge,Run pipeline,Inside part is zero length; no distance from outside portion
+TC-09,B. Zone Boundary,Edge,High,"Segment from ping 5 (inside) to ping 6 (outside), crosses top edge lat 0.0030",Run pipeline,Only the part from ping 5 to the crossing point counts
+TC-10,B. Zone Boundary,Edge,Medium,"Segment crosses two edges, entering through one and leaving through another",Run pipeline,Only the clipped inside part is counted
+TC-11,B. Zone Boundary,Edge,Medium,Each driver enters and leaves Z1 several times on one day,Run pipeline,Each crossing counted by the same rule; totals add up
+TC-12,B. Zone Boundary,Edge,Medium,"Ping exactly on zone vertex (0.0060, 0.0030)",Run pipeline,Treated as inside (covers)
+TC-13,B. Zone Boundary,Negative,Medium,Zone file with latitude and longitude swapped,Load zone,Rejected with an error; no run starts
+TC-14,B. Zone Boundary,Regression,High,Ping exactly on left edge,Run old and fixed,Boundary ping handled per B-01 (inside)
+TC-15,B. Zone Boundary,Regression,High,Segment from outside to inside,Run old and fixed,Only the inside part counted (clipped)
+TC-16,C. GPS Noise,Negative,High,One ping 150 m off R1 mid-route,Run pipeline,Ping dropped; excluded from distance
+TC-17,C. GPS Noise,Edge,High,Pings at 99 m and 101 m off R1,Run pipeline,99 m kept; 101 m dropped
+TC-18,C. GPS Noise,Edge,Medium,Ping at exactly 100.000 m off R1,Run pipeline,Kept (inclusive)
+TC-19,C. GPS Noise,Worst,High,First ping of the day is off-road; later pings on road,Run pipeline,First valid ping becomes speed anchor
+TC-20,C. GPS Noise,Negative,Medium,Every ping off road (GPS fault),Run pipeline,0 km; no NaN
+TC-21,C. GPS Noise,Edge,Medium,DRV-A noise pings and DRV-B valid pings share timestamps,Run pipeline,DRV-B total unchanged by DRV-A noise pings
+TC-22,C. GPS Noise,Negative,High,Implied speed 160 km/h from last accepted ping,Run pipeline,Ping dropped
+TC-23,C. GPS Noise,Edge,Medium,Implied speed exactly 150.0 km/h,Run pipeline,Kept (inclusive)
+TC-24,C. GPS Noise,Edge,High,"Two pings 100 km apart, 2 hours apart",Run pipeline,Valid; uses actual time delta
+TC-25,C. GPS Noise,Worst,Medium,"Two pings same timestamp, different coordinates",Run pipeline,No division by zero; handled per A6
+TC-26,C. GPS Noise,Worst,Medium,Spike ping followed by valid pings,Run pipeline,Anchor stays on last accepted ping
+TC-27,C. GPS Noise,Worst,High,"Off-road noise ping dropped, then valid ping",Run pipeline,"Speed for valid ping measured from last accepted ping, not dropped one"
+TC-28,C. GPS Noise,Edge,Low,Stationary 4 hours at same position,Run pipeline,Valid; 0 km
+TC-29,C. GPS Noise,Regression,High,Ping 150 m off road,Run old and fixed,Ping excluded
+TC-30,C. GPS Noise,Regression,High,Ping implies 160 km/h,Run old and fixed,Ping excluded
+TC-31,C. GPS Noise,Regression,High,Noise ping then valid ping,Run old and fixed,Valid ping kept; speed anchored on last accepted ping
+TC-32,D. Duplicate Pings,Negative,High,"Same driver, same timestamp, same coordinates, sent twice",Run pipeline,Counted once
+TC-33,D. Duplicate Pings,Negative,High,"Same driver, same timestamp, different coordinates",Run pipeline,First occurrence in file order kept; conflict logged
+TC-34,D. Duplicate Pings,Worst,High,Both send a ping at 09:00:00,Run pipeline,Not deduplicated across drivers
+TC-35,D. Duplicate Pings,Worst,Medium,About half of rows are duplicates,Run pipeline on raw and deduplicated input; compare totals,Same result as deduplicated input
+TC-36,D. Duplicate Pings,Edge,Medium,Duplicate arrives after a later ping,Run pipeline,Deduplicated regardless of file position
+TC-37,D. Duplicate Pings,Regression,High,Duplicate ping pair,Run old and fixed,Counted once
+TC-38,E. UTC and Daily Cut,Negative,High,Timestamp 2026-11-07 09:00:00 with no Z,Load pings,Rejected with an error naming the row; no run starts
+TC-39,E. UTC and Daily Cut,Edge,High,Pings at 16:59:59.999Z and 17:00:00.000Z,Run pipeline,17:00:00Z is 00:00 next local day (UTC+9)
+TC-40,E. UTC and Daily Cut,Edge,High,Segment from 16:59:55Z to 17:00:05Z,Run pipeline,Assigned to local day of starting ping (A8)
+TC-41,E. UTC and Daily Cut,Worst,High,"Same input run with machine TZ UTC+8, UTC, UTC+9",Run three times,Identical output in all three
+TC-42,E. UTC and Daily Cut,Edge,Medium,Active across three local midnights,Run pipeline,Each day correct; days sum to total
+TC-43,E. UTC and Daily Cut,Regression,High,Ping at 17:00:00Z,Run old and fixed,Assigned to next local day
+TC-44,E. UTC and Daily Cut,Regression,High,Timestamp without Z,Run old and fixed,Rejected with an error naming the row; no run starts
+TC-45,F. Late and Out-of-Order,Positive,High,Ping stamped 09:00:30 arrives after 09:01:00 ping,Run pipeline,Placed by own timestamp; included
+TC-46,F. Late and Out-of-Order,Worst,High,Entire file reversed,Run pipeline,Same result as sorted input
+TC-47,F. Late and Out-of-Order,Edge,High,"Late ping looks like speed spike in file order, not in timestamp order",Run pipeline,Judged in timestamp order; kept
+TC-48,F. Late and Out-of-Order,Edge,Medium,B late ping interleaved with A pings,Run pipeline,Each driver order independent
+TC-49,F. Late and Out-of-Order,Regression,High,Late ping stamped earlier than previous file row,Run old and fixed,Placed by timestamp
+TC-50,G. Multi-Driver Reconciliation,Positive,High,Full dataset processed,Compare daily totals to overall totals,Daily totals sum to overall total per driver
+TC-51,G. Multi-Driver Reconciliation,Edge,Medium,Only B has pings on a given local day,Run pipeline,A row for that day handled consistently (0 or absent); no error
+TC-52,G. Multi-Driver Reconciliation,Worst,Medium,"About 2,000 segments",Compare summed rounded output to unrounded sum,Rounding error within tolerance
+TC-53,G. Multi-Driver Reconciliation,Regression,High,Full dataset,Run old and fixed; check reconciliation,Daily totals sum to overall total
+TC-54,H. QA Tool and Regression,Positive,High,"Clean dataset, no injected faults",Run checker,Zero violations
+TC-55,H. QA Tool and Regression,Positive,High,Faulty dataset with known injections,Run checker,Each injected fault flagged; precision and recall reported
+TC-56,H. QA Tool and Regression,Positive,Medium,"Fresh clone, README command only",Run from clean clone,Runs and produces report
+TC-57,H. QA Tool and Regression,Regression,High,Old reference implementation,Run all regression tests,"Fails for each documented bug, one failure per bug"
+TC-58,H. QA Tool and Regression,Regression,High,Fixed implementation,Run all regression tests,Passes all; 0 failures
+TC-59,H. QA Tool and Regression,Worst,Medium,Same seed run twice,Compare dataset hashes,Identical
+TC-60,H. QA Tool and Regression,Negative,Medium,Latitude and longitude swapped in pings file,Load pings,Rejected
+TC-61,H. QA Tool and Regression,Negative,Medium,Coordinate abs(lat) above 90 or abs(lon) above 180,Load pings,Rejected
+TC-62,H. QA Tool and Regression,Negative,Medium,Missing column or empty file,Load pings,"Explicit error, not partial result"
+TC-63,H. QA Tool and Regression,Regression,High,Checker run on data with a known injected fault,Run checker,Injected fault reported
+TC-64,I. Data Contract: Ping Interval,Positive,High,"Generated route, no injected faults",Measure time between consecutive pings per driver,Every interval exactly 10 s; no gaps or extra pings
+TC-65,I. Data Contract: Ping Interval,Edge,High,One 30 s gap (two pings missing),Run checker,Gap flagged as warning; distance uses actual delta
+TC-66,I. Data Contract: Ping Interval,Edge,Medium,One 5 s interval,Run checker,"Flagged as warning, not error"
+TC-67,I. Data Contract: Ping Interval,Edge,Medium,A regular 10 s; B irregular,Run checker,Warnings per driver; A unaffected by B
+TC-68,I. Data Contract: Ping Interval,Positive,Medium,Injected 30 s gap recorded in ground truth,Run checker,"Gap appears in violation list, matching ground truth"
+TC-69,I. Data Contract: Ping Interval,Regression,High,30 s gap present,Run old and fixed,Gap reported as warning
