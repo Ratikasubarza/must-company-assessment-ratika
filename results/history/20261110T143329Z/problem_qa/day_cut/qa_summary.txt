@@ -1,0 +1,37 @@
+NOTE: old_reference.py with only BUG-14, BUG-15 on (problem group 'day_cut')
+QA CHECK (SYNTHETIC data)
+pings: data/pings.csv (2525 rows)   report: out/problem/day_cut/daily_km.csv
+daily rows compared: 17   tolerance: 0.001 km   failed: 10
+interval summary (violations = gaps + short intervals):
+  DRV-01   pings   230  regular   229  gaps   0  short   0
+  DRV-02   pings   196  regular   193  gaps   2  short   0
+  DRV-03   pings   215  regular   213  gaps   1  short   0
+  DRV-04   pings   227  regular   225  gaps   1  short   0
+  DRV-05   pings   216  regular   214  gaps   1  short   0
+  DRV-06   pings   217  regular   216  gaps   0  short   0
+  DRV-07   pings   195  regular   194  gaps   0  short   0
+  DRV-08   pings   204  regular   202  gaps   1  short   0
+  DRV-09   pings   191  regular   188  gaps   2  short   0
+  DRV-10   pings   202  regular   201  gaps   0  short   0
+  DRV-11   pings   195  regular   194  gaps   0  short   0
+  DRV-12   pings   219  regular   218  gaps   0  short   0
+interval violations: 8
+  GAP driver DRV-02 ping 70: 20 s
+  GAP driver DRV-02 ping 143: 20 s
+  GAP driver DRV-03 ping 176: 30 s
+  GAP driver DRV-04 ping 145: 20 s
+  GAP driver DRV-05 ping 110: 30 s
+  GAP driver DRV-08 ping 140: 30 s
+  GAP driver DRV-09 ping 50: 30 s
+  GAP driver DRV-09 ping 163: 30 s
+RESULT: FAIL (10 failure(s))
+  daily km DRV-03 2026-11-07: expected 1.144128, got 2.305486 (diff +1.161358)
+  daily km DRV-03 2026-11-08: expected 1.161358, got 0.000000 (diff -1.161358)
+  daily km DRV-04 2026-11-07: expected 0.000000, got 0.771518 (diff +0.771518)
+  daily km DRV-04 2026-11-08: expected 2.312939, got 1.541420 (diff -0.771519)
+  daily km DRV-07 2026-11-08: expected 1.088569, got 4.133871 (diff +3.045302)
+  daily km DRV-07 2026-11-09: expected 3.045302, got 0.000000 (diff -3.045302)
+  daily km DRV-10 2026-11-09: expected 2.274967, got 5.524182 (diff +3.249215)
+  daily km DRV-10 2026-11-10: expected 3.249215, got 0.000000 (diff -3.249215)
+  daily km DRV-11 2026-11-09: expected 0.000000, got 1.769905 (diff +1.769905)
+  daily km DRV-11 2026-11-10: expected 6.047244, got 4.190039 (diff -1.857205)

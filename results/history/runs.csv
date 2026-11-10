@@ -3,3 +3,4 @@ run_id,started,finished,git_branch,git_commit,git_dirty,overall,bad_steps,pytest
 20261110T131221Z,2026-11-10T13:12:21+00:00,2026-11-10T13:12:57+00:00,build/gps-qa-tool,2a2f596,yes,OK,,"116 passed, 28 xfailed, 5 xpassed in 15.49s",PASS,PASS,PASS,FAIL,17/17,14/14,
 20261110T134354Z,2026-11-10T13:43:54+00:00,2026-11-10T13:44:16+00:00,build/gps-qa-tool,2a2f596,yes,BAD,6. pytest,"1 failed, 115 passed, 28 xfailed, 5 xpassed in 14.33s",PASS,PASS,PASS,FAIL,17/17,14/14,
 20261110T140732Z,2026-11-10T14:07:32+00:00,2026-11-10T14:08:02+00:00,build/gps-qa-tool,e57bd9e,no,OK,,"116 passed, 28 xfailed, 5 xpassed in 20.88s",PASS,PASS,PASS,FAIL,17/17,14/14,
+20261110T143329Z,2026-11-10T14:33:29+00:00,2026-11-10T14:33:57+00:00,main,3dd3daf,no,OK,,"119 passed, 28 xfailed, 5 xpassed in 19.99s",PASS,PASS,PASS,FAIL,17/17,14/14,

@@ -1,0 +1,31 @@
+run_id: 20261110T143329Z
+started: 2026-11-10T14:33:29+00:00
+finished: 2026-11-10T14:33:57+00:00
+git_branch: main
+git_commit: 3dd3daf
+git_dirty: no
+overall: OK
+bad_steps: 
+pytest: 119 passed, 28 xfailed, 5 xpassed in 19.99s
+qa_F_BOUNDARY: PASS
+qa_fixed: PASS
+qa_fixed_clean: PASS
+qa_old: FAIL
+bugs_caught_alone: 17/17
+guards_pass_on_fixed: 14/14
+note: 
+steps:
+  OK   exit 0  1. generate data (seed 42)
+  OK   exit 0  2a. fixed.py on F_BOUNDARY
+  OK   exit 0  2b. GATE: qa_check vs hand calculation (F_BOUNDARY)
+  OK   exit 0  3a. fixed.py on data/pings.csv
+  OK   exit 0  3b. fixed.py on data/pings_clean.csv
+  OK   exit 0  3c. old_reference.py on data/pings.csv
+  OK   exit 0  4a. qa_check: fixed, faulty dataset (expect PASS)
+  OK   exit 0  4b. qa_check: fixed, clean dataset (expect PASS)
+  OK   exit 1  4c. qa_check: old, faulty dataset (expect FAIL, exit 1)
+  OK   exit 0  5a. regression summary
+  OK   exit 0  5b. before / after
+  OK   exit 0  5c. problem impact per bug group + day-cut before/after
+  OK   exit 0  5d. limitations (what fixed.py does not handle)
+  OK   exit 0  6. pytest
