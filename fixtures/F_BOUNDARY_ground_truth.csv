@@ -1,0 +1,2 @@
+label,record_type,driver_id,local_date,expected_km,fault_type,ping_id,ref_ping_id,ts_utc,detail
+SYNTHETIC,DAILY_KM,DRV-A,2026-11-07,0.778364,,,,,hand calculation: fixtures/F_BOUNDARY_handcalc.md
