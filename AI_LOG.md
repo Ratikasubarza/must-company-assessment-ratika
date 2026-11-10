@@ -49,19 +49,19 @@ pass; README, AI_LOG and results.
 ## Entry 2 - 2026-11-08 - "Add cases for 149.9 km/h, then run_all, and list all results"
 
 **What the AI found:** fixed.py keeps the 149.9 km/h ping (all 5 kept, 0.444780 km). old_reference.py with
-only BUG-03 on reads the same step as about 150.07 km/h and drops it. Recorded as TC-66 and noted in BUGS.md.
+only BUG-03 on reads the same step as about 150.07 km/h and drops it. Recorded as X-06 and noted in BUGS.md.
 **Got wrong:** a background `run_all.py` from before the change was still running and would have produced
 stale results. It was stopped, and `out/` and `results/` were deleted before re-running.
 
 ## Entry 3 - 2026-11-08 - "Scenario A: 10.1 s / 9.99 s and negative coordinate; Scenario D: new timestamp with same / different coordinates; both send 08:59:99"
 
-**Interpretation stated before building:** "10.1 and 9.99" read as ping intervals in seconds. TC-67..TC-71 added.
+**Interpretation stated before building:** "10.1 and 9.99" read as ping intervals in seconds. X-07..X-11 added.
 **Got wrong:** an impossible time (second 99) produced Python's raw "second must be in 0..59". The message now
 says "is not a valid date/time" in fixed.py and qa_check.py.
 
 ## Entry 4 - 2026-11-08 - "08:59:99 is not a right time, what's the result? Add regression tests for worst cases"
 
-**Got wrong:** the first check of old_reference on the new cases reported TC-66 and TC-67 failing "with every
+**Got wrong:** the first check of old_reference on the new cases reported X-06 and X-07 failing "with every
 single bug". That was not evidence of bugs: those tests read outputs old_reference does not produce (speed
 values, interval warnings). Retracted. Added 14 "regression guards" instead (must pass on fixed.py; old
 recorded only), so the strict "bug tests fail on old" rule (TC-57) stays intact.
@@ -71,7 +71,7 @@ recorded only), so the strict "bug tests fail on old" rule (TC-57) stays intact.
 **Found by the user, confirmed by re-measuring:**
 - P-07 claimed reversing data/pings.csv changes km; measured difference is 0.0 (events change instead).
 - Docstring numbers were wrong: TC-31 (500 m / 40 km/h vs 355.8 m / 16.0 km/h), TC-10 (633.92 vs 633.91 m, and
-  0.472926 vs 0.472916 km, which the AI found while fixing), TC-68 (62.902 vs 62.901 m).
+  0.472926 vs 0.472916 km, which the AI found while fixing), X-08 (62.902 vs 62.901 m).
 - README linked results/SUMMARY.md, which `rm -rf results` before the re-run had deleted.
 - TC-00, TC-46, TC-05/28, TC-52, TC-59 and TC-56 could not fail or were circular.
 
@@ -169,3 +169,49 @@ copies only committed files and tools/ was not yet committed. A scratch clone wi
 after rewriting results/. Once results/ is committed, every run would have reported git_dirty = yes because of
 its own outputs. git state is now taken at the start of the run, excluding results/. A simulated
 commit-then-run in a scratch clone gave git_dirty = no and overall OK on two consecutive runs.
+
+## Entry 11 - 2026-11-10 - "Final fixes before I submit" (clean-up, ID clash, directive header)
+
+Also covers the previous round ("merge, replace REPO_URL, fill Effort"), which had no entry of its own.
+
+**Changed:**
+- Previous round: `build/gps-qa-tool` was fast-forwarded into `main`; REPO_URL was replaced with
+  https://github.com/Ratikasubarza/must-company-assessment-ratika in directive.md (28 occurrences) and README.
+- Deleted 4 untracked iCloud duplicates in fixtures/ ("... 2.csv" / "... 2.md") after `cmp` showed each was
+  byte-identical to its original.
+- docs/: the user renamed the sheet exports to docs/test_cases.csv (TC-01..TC-69) and
+  docs/regression_test_cases.csv; git records the old committed file as a rename. Every reference to the old
+  file name was updated; P-03 now points at rows TC-39/TC-40 (lines 40-41) and RTC-06 (line 7).
+- The repo's own extra tests were renamed TC-61..TC-71 -> X-01..X-11, because the sheet now uses TC-61..TC-69 for
+  different cases. Earlier AI_LOG entries were updated to the new IDs.
+- New tests named by sheet ID: TC-62 (0-byte pings file: explicit error, no output; pipeline and checker) and
+  TC-67 (DRV-A regular, DRV-B irregular: warnings per driver, DRV-A's km unaffected).
+- intent.md: a table mapping sheet TC-61..TC-69 to the covering tests; P-09 rewritten for the X prefix; P-11
+  (header-only pings file accepted) and P-12 (TC-69 decision) added. Coverage claims in README and directive.md C10
+  now match a measured count: 62 sheet cases have a test with their ID, 6 are covered via the mapping, TC-69 on
+  fixed.py only; 14 of 14 RTC. (Entry 6's "all TC-01..TC-60 covered" was true when written and is left as is.)
+- directive.md: Effort line and a two-line Bottom line under the title.
+
+**What the AI got wrong:**
+- Previous round: it expected 27 REPO_URL occurrences in directive.md; there were 28 (27 links plus the
+  "Repository:" line). A count guard stopped the edit before anything was written; it was then redone.
+- The rename regex used a word boundary, so it missed 7 test function names such as `test_TC_65_...`
+  (the `TC` follows an underscore). Found by a grep afterwards and fixed.
+- The first checker test for TC-62 passed on the deliberately broken copy: it passed the ground-truth file as
+  `--report`, so the checker rejected the report, not the empty pings. Fixed with a valid report and a check that
+  the error names the pings file; it then failed on the broken copy and passed in the repo.
+- It ran the new tests in the repo before running them on the broken copies, the reverse of the order asked for;
+  both were re-run in the requested order.
+- The request referred to "Effort: 6 hours"; the line actually read "Effort: ___ hours". It was replaced with
+  the user's exact text.
+
+**Measured for the decisions:**
+- old_reference.py emits 0 INTERVAL_WARNING events on data/pings.csv with all 17 bugs on and with none
+  (fixed.py: 8), so a "fails on old" TC-69 check would also fail TC-57's no-bug baseline.
+- A header-only pings file: fixed.py exit 0 with empty reports; a 0-byte file: exit 2, no output.
+
+**Decided by the user:**
+- TC-69: option B, covered on fixed.py only (recorded as P-12).
+- The Bottom line was approved as proposed.
+- The Effort text is the user's own.
+- P-11 (header-only pings file) was left open; no decision was given.
