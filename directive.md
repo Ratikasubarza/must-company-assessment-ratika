@@ -60,9 +60,9 @@ Full rules and assumptions A1-A23: [intent.md](REPO_URL/blob/main/intent.md).
 
 ## Appendix: results and handoff
 
-**Run cited:** `RUN_ID_PENDING` (to be filled in after the committed run: git_dirty = no, overall OK; see
-[results/history/runs.csv](REPO_URL/blob/main/results/history/runs.csv)). Numbers below were measured on
-2026-11-10 with `python run_all.py` and its tools.
+**Run cited:** `20261110T140732Z` on commit `e57bd9e` (branch build/gps-qa-tool): git_dirty = no, overall OK,
+pytest 116 passed, 28 xfailed, 5 xpassed. Row in [results/history/runs.csv](REPO_URL/blob/main/results/history/runs.csv);
+full log: [run.log](REPO_URL/blob/main/results/history/20261110T140732Z/run.log). Every number below comes from this run.
 
 **Tool, dataset, fix and regression checks**
 - Checker: [qa_check.py](REPO_URL/blob/main/qa_check.py)
@@ -98,7 +98,7 @@ BUG-14/15 on, gross km wrong is 20.081898 km over 10 of 17 driver-days (next: no
 Ranking, reasoning and per-problem evidence: [intent.md, "Ranking and choice"](REPO_URL/blob/main/intent.md#ranking-and-choice).
 
 **pytest** ([test_results.csv](REPO_URL/blob/main/results/test_results.csv)): 116 passed, 28 xfailed, 5 xpassed
-(measured in a clean clone with every file committed; to be confirmed by the cited run). The 28 xfailed are
+(run 20261110T140732Z). The 28 xfailed are
 18 bug-regression tests on old_reference (must fail), 9 guards on old_reference (recorded only) and NC-01 (known
 limitation). The 5 xpassed are guards that old_reference happens to pass.
 

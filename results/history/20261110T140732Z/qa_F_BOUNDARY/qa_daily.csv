@@ -1,0 +1,2 @@
+driver_id,local_date,expected_km,actual_km,diff_km,result
+DRV-A,2026-11-07,0.778364,0.778364,+0.000000,PASS

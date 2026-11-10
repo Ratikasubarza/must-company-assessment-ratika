@@ -115,7 +115,7 @@ TC-53,old_reference,FAIL,{},{'DRV-11': -0.087398},regression,test_TC_53_daily_to
 TC-54,qa_check,PASS,"(0, True, True)","(0, True, True)",checker,test_TC_54_clean_dataset_zero_violations
 TC-55,qa_check,PASS,"(1, True, True, True)","(1, True, True, True)",checker,test_TC_55_checker_fails_old_implementation
 TC-55,qa_check,PASS,"(0, 0, 0, True)","(0, 0, 0, True, 'fault detection: injected 54, TP 62, FP 0, FN 0, precision 1.000, recall 1.000')",checker,test_TC_55_each_injected_fault_flagged_with_precision_recall
-TC-56,qa_check,FAIL,"([0, 0], True, True, 2, 2, ['OK', 'OK'], True, True)","([1, 1], True, True, 2, 2, ['BAD', 'BAD'], True, True)",checker,test_TC_56_fresh_copy_runs_from_readme_command
+TC-56,qa_check,PASS,"([0, 0], True, True, 2, 2, ['OK', 'OK'], True, True)","([0, 0], True, True, 2, 2, ['OK', 'OK'], True, True)",checker,test_TC_56_fresh_copy_runs_from_readme_command
 TC-57,old_reference,PASS,17 bugs caught alone; 0 checks pass with all bugs on; 0 fail with no bugs,17 bugs caught alone (missed []); 0 pass with all bugs on []; 0 fail with no bugs [],meta,test_TC_57_each_documented_bug_fails_its_regression_test
 TC-58,fixed,PASS,0 of 32 fail,0 of 32 fail [],meta,test_TC_58_fixed_passes_all_regression_checks
 TC-59,fixed,PASS,"{'pings.csv': '8740b276e1bcaf7a68300c0c280c8be03c70685bfcbc56c7905d69372471287a', 'ground_truth.csv': '8b0f0e3b2a7e7fe12a6b451781dd6081666bdeb3b9a9e71fed53148e7f56a6c4'}","run1==run2: True; run1: {'pings.csv': '8740b276e1bcaf7a68300c0c280c8be03c70685bfcbc56c7905d69372471287a', 'ground_truth.csv': '8b0f0e3b2a7e7fe12a6b451781dd6081666bdeb3b9a9e71fed53148e7f56a6c4'}",functional,test_TC_59_same_seed_gives_identical_dataset

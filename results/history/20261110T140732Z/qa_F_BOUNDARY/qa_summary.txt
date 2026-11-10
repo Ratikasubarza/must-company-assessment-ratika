@@ -1,0 +1,7 @@
+QA CHECK (SYNTHETIC data)
+pings: fixtures/F_BOUNDARY.csv (8 rows)   report: out/F_BOUNDARY/daily_km.csv
+daily rows compared: 1   tolerance: 0.001 km   failed: 0
+interval summary (violations = gaps + short intervals):
+  DRV-A    pings     8  regular     7  gaps   0  short   0
+interval violations: 0
+RESULT: PASS (0 failure(s))
