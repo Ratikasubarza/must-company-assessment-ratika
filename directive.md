@@ -5,7 +5,7 @@ The old pipeline, with all 17 bugs, reported 58.872196 km; the correct total is 
 
 All data, drivers, roads and zones are SYNTHETIC. Repository: https://github.com/Ratikasubarza/must-company-assessment-ratika
 
-Effort: about 6 hours of my own focused time, in short sessions on 7, 8 and 10 Nov 2026. Not counted: time waiting for the AI or the test suite, and slow runs caused by iCloud.
+Effort: about 6 hours of my own focused time, in short sessions on 7, 8, 10 and 11 Nov 2026. Not counted: time waiting for the AI or the test suite, and slow runs caused by iCloud.
 
 ## Objective
 Build and verify a QA tool for pay-per-km GPS distance. Drivers send a ping every 10 s and are paid
