@@ -10,6 +10,8 @@ synthetic shapes near latitude 0 (R1 runs from (0, 0) to (0.020, 0.005) in [lon,
 planted on purpose (BUG-01..BUG-17); `qa_check.py` checks a pipeline's daily report against ground truth
 computed independently by the data generator (seed 42: 2,525 pings, 12 drivers, 54 injected faults).
 
+**Cited run:** `20261110T143329Z` (`python run_all.py`, git_dirty = no, overall OK): pytest 119 passed, 28 xfailed, 5 xpassed.
+
 ## Assumptions (decided before coding)
 - A1 Road path R1: synthetic polyline, 4 points, label SYNTHETIC. Defined in data/route_R1.json.
 - A2 Zone Z1: synthetic polygon, 4 points, label SYNTHETIC. Defined in data/zone_Z1.json.

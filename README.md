@@ -47,6 +47,15 @@ the copy. With files uncommitted it fails, and step 6 then reports BAD.
   `xfail(strict=False)`, so this is reported, not failed.
 - Any **failed** is a real problem. Any XPASS on a bug-regression test or on NC-01 fails the run (strict).
 
+### Key results (run `20261110T143329Z`)
+- **pytest:** `119 passed, 28 xfailed, 5 xpassed`.
+- **Totals:** ground truth 53.802293 km; fixed.py 53.802293 km; old_reference.py (all 17 bugs) 58.872196 km
+  (`results/before_after.csv`).
+- **Day cut, fixed first:** with only BUG-14/15 on, 10/17 driver-days are wrong; after the fix (fixed.py),
+  17/17 driver-days equal ground truth (`results/problem_impact.csv`, `results/daycut_before_after.csv`).
+- **Known limitation:** parked GPS jitter (within 5 m for 1 hour) adds 1.655136 km (L01 / NC-01,
+  `results/limitations.csv`).
+
 ### Run history (every run is kept)
 `results/` holds only the **latest** run; `run_all.py` clears it (except `results/history/`) at the start of
 each run. Every run, including one stopped by the F_BOUNDARY gate or run with `--no-tests`, is saved to:
