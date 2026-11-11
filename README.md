@@ -39,7 +39,7 @@ python3.11 -m venv .venv
 the copy. With files uncommitted it fails, and step 6 then reports BAD.
 
 ### Expected pytest summary
-`116 passed, 28 xfailed, 5 xpassed` (149 tests, measured 2026-11-10 with every file committed in a scratch copy).
+`119 passed, 28 xfailed, 5 xpassed` (152 tests; run `20261110T143329Z` on commit `3dd3daf`, git_dirty = no, overall OK).
 - **xfailed 28** = 18 bug-regression tests on old_reference (must fail: `xfail(strict=True)`) + 9 guards
   on old_reference (old's result is only recorded) + NC-01 (known limitation: GPS jitter while parked is
   not filtered, `xfail(strict=True)`).

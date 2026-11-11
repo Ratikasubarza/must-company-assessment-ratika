@@ -63,9 +63,9 @@ Full rules and assumptions A1-A23: [intent.md](https://github.com/Ratikasubarza/
 
 ## Appendix: results and handoff
 
-**Run cited:** `20261110T140732Z` on commit `e57bd9e` (branch build/gps-qa-tool): git_dirty = no, overall OK,
-pytest 116 passed, 28 xfailed, 5 xpassed. Row in [results/history/runs.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/history/runs.csv);
-full log: [run.log](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/history/20261110T140732Z/run.log). Every number below comes from this run.
+**Run cited:** `20261110T143329Z` on commit `3dd3daf` (branch main): git_dirty = no, overall OK,
+pytest 119 passed, 28 xfailed, 5 xpassed. Row in [results/history/runs.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/history/runs.csv);
+full log: [run.log](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/history/20261110T143329Z/run.log). Every number below comes from this run.
 
 **Tool, dataset, fix and regression checks**
 - Checker: [qa_check.py](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/qa_check.py)
@@ -100,8 +100,8 @@ before the fix. Per local day (before -> after): 2026-11-07 16.886616 -> 14.9537
 BUG-14/15 on, gross km wrong is 20.081898 km over 10 of 17 driver-days (next: noise, 2.269227 km over 5 of 15).
 Ranking, reasoning and per-problem evidence: [intent.md, "Ranking and choice"](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/intent.md#ranking-and-choice).
 
-**pytest** ([test_results.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/test_results.csv)): 116 passed, 28 xfailed, 5 xpassed
-(run 20261110T140732Z). The 28 xfailed are
+**pytest** ([test_results.csv](https://github.com/Ratikasubarza/must-company-assessment-ratika/blob/main/results/test_results.csv)): 119 passed, 28 xfailed, 5 xpassed
+(run 20261110T143329Z). The 28 xfailed are
 18 bug-regression tests on old_reference (must fail), 9 guards on old_reference (recorded only) and NC-01 (known
 limitation). The 5 xpassed are guards that old_reference happens to pass.
 
